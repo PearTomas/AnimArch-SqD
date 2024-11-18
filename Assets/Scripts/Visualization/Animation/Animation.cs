@@ -28,6 +28,7 @@ namespace Visualization.Animation
         public ClassDiagram.Diagrams.ClassDiagram classDiagram { get; private set;}
         public ObjectDiagram objectDiagram { get; private set;}
         public ActivityDiagram activityDiagram { get; private set; }
+        public SequenceDiagram sequenceDiagram {get; private set; }
         public Color classColor;
         public Color methodColor;
         public Color relationColor;
@@ -60,6 +61,7 @@ namespace Visualization.Animation
             classDiagram = GameObject.Find("ClassDiagram").GetComponent<ClassDiagram.Diagrams.ClassDiagram>();
             objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
             activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
+            sequenceDiagram = GameObject.Find("SequenceDiagram").GetComponent<SequenceDiagram>();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }

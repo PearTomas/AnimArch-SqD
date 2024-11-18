@@ -44,6 +44,8 @@ namespace Visualization.ClassDiagram
         public ObjectDiagram ObjectDiagram;
         public ActivityDiagram ActivityDiagram;
 
+        public SequenceDiagram SequenceDiagram;
+
         public List<InterGraphRelation> RelationsClassToObject = new();
     }
 }
