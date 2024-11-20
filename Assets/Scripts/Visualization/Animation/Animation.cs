@@ -57,9 +57,10 @@ namespace Visualization.Animation
 
         private void Awake()
         {
-            classDiagram = GameObject.Find("ClassDiagram").GetComponent<ClassDiagram.Diagrams.ClassDiagram>();
-            objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
-            activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
+            //classDiagram = GameObject.Find("ClassDiagram").GetComponent<ClassDiagram.Diagrams.ClassDiagram>();
+            //objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
+            //activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
+            DiagramManager diagramManager = GameObject.Find("DiagramManager").GetComponent<DiagramManager>();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }
