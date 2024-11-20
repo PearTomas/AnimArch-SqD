@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8097,6 +8097,7 @@ Transform:
   - {fileID: 1164213133}
   - {fileID: 126492978}
   - {fileID: 1930053199}
+  - {fileID: 838906256}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10192,6 +10193,7 @@ MonoBehaviour:
   ClassDiagram: {fileID: 1164213134}
   ObjectDiagram: {fileID: 0}
   ActivityDiagram: {fileID: 0}
+  SequenceDiagram: {fileID: 0}
   RelationsClassToObject: []
 --- !u!1 &250727387
 GameObject:
@@ -20636,6 +20638,7 @@ MonoBehaviour:
   isPaused: 0
   standardPlayMode: 0
   nextStep: 0
+  isEXECommandReturn: 0
   startClassName: 
   startMethodName: 
   SuperSpeed: 0
@@ -26367,8 +26370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ae81dcb336c4c4785e93b28fc4e619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeafPrefab: {fileID: 3741087322950803797, guid: 11e771dad1ee3654498374fa347420bc,
-    type: 3}
 --- !u!114 &650752381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26381,8 +26382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a410816f552934e4cb14aec715cd0120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PatternPrefab: {fileID: 9147520873521795905, guid: 62f1d8450967fdf47b451aef9e42d0ea,
-    type: 3}
 --- !u!114 &650752382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33839,6 +33838,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837492840}
   m_CullTransparentMesh: 0
+--- !u!1 &838906255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 838906256}
+  - component: {fileID: 838906257}
+  m_Layer: 0
+  m_Name: SequenceDiagram
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &838906256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838906255}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 600}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 189701878}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &838906257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838906255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86632a4412bb1474cad8ba11b788dc29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetZ: 800
+  graph: {fileID: 0}
 --- !u!1 &847760169
 GameObject:
   m_ObjectHideFlags: 0

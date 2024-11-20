@@ -27,18 +27,29 @@ namespace AnimArch.Visualization.Diagrams
         private void Awake()
         {
             DiagramPool.Instance.SequenceDiagram = this;
+            Entities = new List<EntityInDiagram>();
+            EntityInDiagram entityInDiagram = new EntityInDiagram
+            {
+                VisualObject = DiagramPool.Instance.sequencePrefab,
+                EntityName = "ahoj"
+            };
+            Entities.Add(entityInDiagram);
             ResetDiagram();
+            
+            CreateGraph();
+            Generate();
         }
 
         public void ResetDiagram()
-        {}
+        {
+            
+        }
 
         private Graph CreateGraph()
         {
-            ResetDiagram();
             var go = Instantiate(DiagramPool.Instance.graphPrefab);
             graph = go.GetComponent<Graph>();
-            graph.nodePrefab = DiagramPool.Instance.objectPrefab;
+            graph.nodePrefab = DiagramPool.Instance.sequencePrefab;
             return graph;
         }
 
@@ -54,62 +65,34 @@ namespace AnimArch.Visualization.Diagrams
             // }
         }
 
-    //     private void Generate()
-    //     {
-    //         //Render classes
-    //         for (int i = 0; i < Entities.Count; i++)
-    //         {
-    //             Debug.Log(Entities[i].EntityName);
-    //             GenerateObject(Entities[i]);
-    //         }
-    //     }
+        public void Generate()
+        {
+            Debug.LogError("generate");
+            //Render classes
+            for (int i = 0; i < Entities.Count; i++)
+            {
+                Debug.Log(Entities[i].EntityName);
+                GenerateObject(Entities[i]);
+            }
+        }
 
-    //     private void GenerateObject(ObjectInDiagram Object)
-    //     {
-    //         //Setting up
-    //         var node = graph.AddNode();
-    //         node.GetComponent<Clickable>().IsObject = true;
-    //         node.SetActive(false);
-    //         node.name = Object.EntityName;
-    //         var background = node.transform.Find("Background");
+        private void GenerateObject(EntityInDiagram Entity)
+        {
+            //Setting up
+            var node = graph.AddNode();
+            // node.GetComponent<Clickable>().IsObject = true;
+            node.SetActive(true);
+            node.name = Entity.EntityName;
+            Entity.VisualObject.SetActive(true);
+            var header = node.transform.Find("Header/Entity");
+            var footer = node.transform.Find("Footer/Entity");
+
+            header.GetComponent<TextMeshProUGUI>().text = node.name;
+            footer.GetComponent<TextMeshProUGUI>().text = node.name;
 
 
-    //         //Attributes
-    //         foreach (string AttributeName in Object.Instance.State.Keys)
-    //         {
-    //             attributes.GetComponent<TextMeshProUGUI>().text +=
-    //                 AttributeName + " = " + Object.Instance.State[AttributeName].ToObjectDiagramText() + "\n";
-    //         }
-
-    //         foreach (CDMethod method in Object.Class.ClassInfo.GetMethods(true))
-    //         {
-    //             string arguments = "(";
-    //             if (method.Parameters != null)
-    //                 for (int d = 0; d < method.Parameters.Count; d++)
-    //                 {
-    //                     if (d < method.Parameters.Count - 1)
-    //                         arguments += (method.Parameters[d] + ", ");
-    //                     else arguments += (method.Parameters[d]);
-    //                 }
-
-    //             arguments += ")";
-
-    //             methods.GetComponent<TextMeshProUGUI>().text +=
-    //                 method.Name + arguments + " :" + method.ReturnType + "\n";
-    //         }
-
-    //         //Add Class to Dictionary
-    //         Object.VisualObject = node;
-
-    //         // Create Edge towards class
-    //         GameObject InterGraphLine = CreateInterGraphLine(Object.Class.VisualObject, Object.VisualObject);
-    //         InterGraphLine.GetComponent<InterGraphRelation>().Initialize(Object, Object.Class);
-    //         DiagramPool.Instance.RelationsClassToObject.Add
-    //         (
-    //             InterGraphLine.GetComponent<InterGraphRelation>()
-    //         );
-    //         // InterGraphLine.GetComponent<InterGraphRelation>().Hide();
-    //     }
+            // var background = node.transform.Find("Background");
+        }
 
     //     private void AddObject(ObjectInDiagram Object)
     //     {

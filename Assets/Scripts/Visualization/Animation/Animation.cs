@@ -62,6 +62,7 @@ namespace Visualization.Animation
             objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
             activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
             sequenceDiagram = GameObject.Find("SequenceDiagram").GetComponent<SequenceDiagram>();
+                
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }
