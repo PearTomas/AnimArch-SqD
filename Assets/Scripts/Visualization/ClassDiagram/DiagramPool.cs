@@ -12,7 +12,8 @@ namespace Visualization.ClassDiagram
         public GameObject classPrefab;
         public GameObject objectPrefab;
         public GameObject activityPrefab;
-        public GameObject sequencePrefab;
+        public GameObject sequenceEntityPrefab;
+        public GameObject sequenceLinePrefab;
         public GameObject activityInitialPrefab;
         public GameObject activityFinalPrefab;
         public GameObject classAttributePrefab;

@@ -10140,6 +10140,10 @@ MonoBehaviour:
     type: 3}
   activityPrefab: {fileID: 1226358218867430, guid: 29ea50781798cac44b9a0005a201fa77,
     type: 3}
+  sequenceEntityPrefab: {fileID: 1226358218867430, guid: 87290dc73ceec474ab9f04f9f324a604,
+    type: 3}
+  sequenceLinePrefab: {fileID: 1226358218867430, guid: a402ed029d5d77249ba12998a1ea1485,
+    type: 3}
   activityInitialPrefab: {fileID: 1226358218867430, guid: 204995dbba78b89409f029217f15cb08,
     type: 3}
   activityFinalPrefab: {fileID: 1226358218867430, guid: 1be686612295d7949a1be32ca1e1dbb3,
@@ -33882,7 +33886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86632a4412bb1474cad8ba11b788dc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetZ: 800
+  offsetZ: 0
   graph: {fileID: 0}
 --- !u!1 &847760169
 GameObject:

@@ -24,45 +24,72 @@ namespace AnimArch.Visualization.Diagrams
         public List<EntityInDiagram> Entities { get; private set; }
 
 
+        private float initialActivityPositionY;
+        private float initialActivityPositionZ;
+        private float activityOffsetX = 70;
+
         private void Awake()
         {
+            initialActivityPositionY = 100;
+            initialActivityPositionZ = 100;
             DiagramPool.Instance.SequenceDiagram = this;
             Entities = new List<EntityInDiagram>();
+            string[] names = {"ahoj", "Tomi", "!"};
+            for (int i = 0; i < 3; i++)
+            {
             EntityInDiagram entityInDiagram = new EntityInDiagram
             {
-                VisualObject = DiagramPool.Instance.sequencePrefab,
-                EntityName = "ahoj"
+                VisualObject = DiagramPool.Instance.sequenceEntityPrefab,
+                LifeLine = DiagramPool.Instance.sequenceLinePrefab,
+                EntityName = names[i]
             };
             Entities.Add(entityInDiagram);
+            }
+            
             ResetDiagram();
             
-            CreateGraph();
-            Generate();
+            
         }
 
         public void ResetDiagram()
         {
-            
+            if (graph != null)
+            {
+                Destroy(graph.gameObject);
+                graph = null;
+            }
         }
+
+        public void LoadDiagram()
+        {
+            CreateGraph();
+            Generate();
+            ManualLayout();
+
+            graph.transform.position = new Vector3(0, 0, 3*offsetZ);
+        }
+
 
         private Graph CreateGraph()
         {
             var go = Instantiate(DiagramPool.Instance.graphPrefab);
             graph = go.GetComponent<Graph>();
-            graph.nodePrefab = DiagramPool.Instance.sequencePrefab;
+            graph.nodePrefab = DiagramPool.Instance.sequenceEntityPrefab;
+            
             return graph;
         }
-
+        
         public void ManualLayout()
         {
-            // int i = 0;
-            // foreach (ObjectInDiagram objectInDiagram in Objects)
-            // {
-            //     // objectInDiagram.VisualObject.GetComponent<RectTransform>()
-            //     //     .Shift(300 * ((int) (i / 2) - 1), 200 * (i % 2), 0);
-            //     objectInDiagram.VisualObject.transform.position = objectInDiagram.Class.VisualObject.transform.position;
-            //     i++;
-            // }
+            int i = 0;
+            foreach (EntityInDiagram entityInDiagram in Entities)
+            {
+                entityInDiagram.VisualObject.transform.SetPositionAndRotation(
+                    new Vector3(i * activityOffsetX, initialActivityPositionY, initialActivityPositionZ), 
+                    Quaternion.identity);
+                // Debug.LogErrorFormat("Repositioning activity {0}", i); //TODOa remove
+                i++;
+            }
         }
 
         public void Generate()
@@ -73,23 +100,39 @@ namespace AnimArch.Visualization.Diagrams
             {
                 Debug.Log(Entities[i].EntityName);
                 GenerateObject(Entities[i]);
+                graph.Layout();
             }
         }
+
+        public float distanceBetweenNodes = 50.0f; // Distance between nodes in the sequence
+        public float lineYOffset = 0.5f; // Offset for lines between entities
 
         private void GenerateObject(EntityInDiagram Entity)
         {
             //Setting up
+            graph.nodePrefab = DiagramPool.Instance.sequenceEntityPrefab;
             var node = graph.AddNode();
-            // node.GetComponent<Clickable>().IsObject = true;
+            Entity.VisualObject = node;
             node.SetActive(true);
             node.name = Entity.EntityName;
-            Entity.VisualObject.SetActive(true);
+            
             var header = node.transform.Find("Header/Entity");
-            var footer = node.transform.Find("Footer/Entity");
-
             header.GetComponent<TextMeshProUGUI>().text = node.name;
-            footer.GetComponent<TextMeshProUGUI>().text = node.name;
+            node.transform.position = new Vector3(0, 0, 0);
 
+            node = graph.AddNode();
+            Entity.VisualObject = node;
+            node.SetActive(true);
+            node.name = Entity.EntityName;
+            header = node.transform.Find("Header/Entity");
+            header.GetComponent<TextMeshProUGUI>().text = node.name;
+            node.transform.position = new Vector3(0, distanceBetweenNodes, 0);
+     
+            graph.nodePrefab = DiagramPool.Instance.sequenceLinePrefab;
+            node = graph.AddNode();
+            Entity.VisualObject = node;
+            node.transform.position = new Vector3(0, distanceBetweenNodes - lineYOffset, 0);
+        
 
             // var background = node.transform.Find("Background");
         }

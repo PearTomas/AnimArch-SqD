@@ -7,6 +7,7 @@ namespace Visualization.ClassDiagram.ComponentsInDiagram
     {
         public string EntityName;
         public GameObject VisualObject;
+        public GameObject LifeLine;
 
         public EntityInDiagram() 
         {}
