@@ -14,7 +14,6 @@ namespace Visualization.ClassDiagram.Diagrams
 {
     public class ClassDiagram : Diagram
     {
-        public Graph graph;
 
         public List<ClassInDiagram> Classes { get; } = new();
         public List<RelationInDiagram> Relations { get; } = new();

@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using UMSAGL.Scripts;
+using UnityEngine;
 
 namespace Visualization.ClassDiagram.Diagrams
 {
     public class Diagram : MonoBehaviour
     {
         protected float offsetZ = 800;
+        public Graph graph;
 
         public void setZOffset(float newOffset)
         {

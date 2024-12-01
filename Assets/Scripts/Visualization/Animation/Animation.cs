@@ -58,10 +58,12 @@ namespace Visualization.Animation
             //classDiagram = GameObject.Find("ClassDiagram").GetComponent<ClassDiagram.Diagrams.ClassDiagram>();
             //objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
             //activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
-            this.DiagramManager = DiagramManager.Instance;
+            DiagramManager = DiagramManager.Instance;
 
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
+            
+            //DiagramManager.Reposition();
         }
 
         private void ParseAnimationMethods()
@@ -222,6 +224,7 @@ namespace Visualization.Animation
 
             SetupAnimation(startMethod, MethodExecutableCode);
 
+            DiagramManager.Reposition();
 
             AnimationThread SuperThread = new AnimationThread(currentProgramInstance.CommandStack, currentProgramInstance, this);
             yield return StartCoroutine(SuperThread.Start());
@@ -419,6 +422,7 @@ namespace Visualization.Animation
         {
             isPaused = false;
             StartCoroutine("Animate");
+            
         }
 
         //Couroutine that can be used to Highlight class for a given duration of time

@@ -12,7 +12,6 @@ namespace AnimArch.Visualization.Diagrams
 {
     public class ActivityDiagram : Diagram
     {
-        public Graph graph;
         public List<ActivityInDiagram> Activities { get; private set; }
         public List<ActivityRelation> Relations { get; private set; }
 
@@ -69,7 +68,7 @@ namespace AnimArch.Visualization.Diagrams
             //ManualLayout(); 
             //AutoLayout();
 
-            graph.transform.position = new Vector3(0, 0, 2 * offsetZ);
+            //graph.transform.position = new Vector3(0, 0, 2 * offsetZ);
         }
 
         private Graph CreateGraph()
