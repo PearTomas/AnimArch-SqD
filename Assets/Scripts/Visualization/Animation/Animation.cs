@@ -224,7 +224,7 @@ namespace Visualization.Animation
 
             SetupAnimation(startMethod, MethodExecutableCode);
 
-            DiagramManager.Reposition();
+            DiagramManager.ChangeToQueue();
 
             AnimationThread SuperThread = new AnimationThread(currentProgramInstance.CommandStack, currentProgramInstance, this);
             yield return StartCoroutine(SuperThread.Start());

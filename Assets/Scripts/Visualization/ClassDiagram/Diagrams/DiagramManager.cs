@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AnimArch.Visualization.Diagrams;
 using UnityEngine;
@@ -19,12 +20,12 @@ namespace Visualization.ClassDiagram.Diagrams
             diagramList = new List<Diagram>()
             {
                 classDiagram,
-                objectDiagram,
-                activityDiagram
+                activityDiagram,
+                objectDiagram
             };
         }
 
-        public void Reposition()
+        public void ChangeToQueue()
         {
             for (var i = 0; i < diagramList.Count; i++)
             {
@@ -33,7 +34,6 @@ namespace Visualization.ClassDiagram.Diagrams
                 {
                     if (diagram.graph)
                     {
-                        Debug.Log("DiagramManager: diagram graph not Null");
                         diagram.graph.transform.position = new Vector3(0, 0, Offset * i);
                         
                     }
@@ -41,9 +41,38 @@ namespace Visualization.ClassDiagram.Diagrams
             }
         }
 
-        public static void StaticReposition()
+        public void ChangeLayout(Boolean IsGridLayout)
         {
-            Instance.Reposition();
+            if (IsGridLayout)
+            {
+                ChangeToQueue();
+            }
+            else
+            {
+                ChangeToGrid();
+            }
+        }
+
+        private void ChangeToGrid()
+        {
+            var xOffset = 1800;
+            var yOffset = 1800;
+            var cnt = 0;
+            for (var j = 1; j >= 0; j--)
+            {
+                for (var i = 1; i >= 0; i--)
+                {
+                    var diagram = diagramList[cnt];
+                    cnt++;
+                    if (diagram)
+                    {
+                        if (diagram.graph)
+                        {
+                            diagram.graph.transform.position = new Vector3(i*xOffset, j*yOffset, 0);
+                        }
+                    }
+                }
+            }
         }
         
     }
