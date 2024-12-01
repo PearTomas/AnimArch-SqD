@@ -5529,7 +5529,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d8e5ab3c8efd44ea7d6ff69ab69f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetZ: 800
   graph: {fileID: 0}
 --- !u!1 &129736073
 GameObject:
@@ -20592,6 +20591,7 @@ GameObject:
   - component: {fileID: 493128778}
   - component: {fileID: 493128779}
   - component: {fileID: 493128780}
+  - component: {fileID: 493128781}
   m_Layer: 0
   m_Name: AnimationManager
   m_TagString: Untagged
@@ -20627,6 +20627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistent: 1
+  DiagramManager: {fileID: 0}
   classColor: {r: 0.9058824, g: 0.82745105, b: 0.62352943, a: 1}
   methodColor: {r: 0.8431373, g: 0.21960786, b: 0.36862746, a: 1}
   relationColor: {r: 0.9843138, g: 0.48235297, b: 0.41960788, a: 1}
@@ -20636,6 +20637,7 @@ MonoBehaviour:
   isPaused: 0
   standardPlayMode: 0
   nextStep: 0
+  isEXECommandReturn: 0
   startClassName: 
   startMethodName: 
   SuperSpeed: 0
@@ -20656,6 +20658,23 @@ MonoBehaviour:
     AnimationName: 
     MethodsCodes: []
   diagramId: 0
+--- !u!114 &493128781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493128777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d75f04fe9b3d6645b749875981509a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _persistent: 1
+  offset: 0
+  classDiagram: {fileID: 1164213134}
+  objectDiagram: {fileID: 126492979}
+  activityDiagram: {fileID: 1930053200}
 --- !u!1 &496680291
 GameObject:
   m_ObjectHideFlags: 0
@@ -26367,8 +26386,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ae81dcb336c4c4785e93b28fc4e619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeafPrefab: {fileID: 3741087322950803797, guid: 11e771dad1ee3654498374fa347420bc,
-    type: 3}
 --- !u!114 &650752381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26381,8 +26398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a410816f552934e4cb14aec715cd0120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PatternPrefab: {fileID: 9147520873521795905, guid: 62f1d8450967fdf47b451aef9e42d0ea,
-    type: 3}
 --- !u!114 &650752382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45178,7 +45193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c98af9f6035d24b92727591adad97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetZ: 800
   graph: {fileID: 0}
 --- !u!1 &1164831679
 GameObject:
@@ -69521,7 +69535,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ada00099e030da48a19e19caf07f42e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetZ: 800
   graph: {fileID: 0}
 --- !u!1 &1931080332
 GameObject:
