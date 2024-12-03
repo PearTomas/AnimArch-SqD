@@ -438,9 +438,6 @@ namespace Visualization.UI
             DiagramPool.Instance.ActivityDiagram.ResetDiagram();
             DiagramPool.Instance.ActivityDiagram.LoadDiagram();
 
-            DiagramPool.Instance.SequenceDiagram.ResetDiagram();
-            DiagramPool.Instance.SequenceDiagram.LoadDiagram();
-
             Animation.Animation.Instance.UnhighlightAll();
             Animation.Animation.Instance.HighlightClass(name, true);
 

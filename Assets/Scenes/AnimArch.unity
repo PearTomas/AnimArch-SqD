@@ -10142,7 +10142,11 @@ MonoBehaviour:
     type: 3}
   sequenceEntityPrefab: {fileID: 1226358218867430, guid: 87290dc73ceec474ab9f04f9f324a604,
     type: 3}
-  sequenceLinePrefab: {fileID: 1226358218867430, guid: a402ed029d5d77249ba12998a1ea1485,
+  sequenceLinePrefab: {fileID: 1226358218867430, guid: 0d9ba15091db95a4b91891a3a3dda14c,
+    type: 3}
+  sequenceActivationBlock: {fileID: 1156878998517402, guid: ee2717e8d87af0b49bd5c1e6e384c2ea,
+    type: 3}
+  sequenceArrowMesssage: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
     type: 3}
   activityInitialPrefab: {fileID: 1226358218867430, guid: 204995dbba78b89409f029217f15cb08,
     type: 3}
@@ -33886,10 +33890,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86632a4412bb1474cad8ba11b788dc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetZ: 0
+  offsetZ: 800
   graph: {fileID: 0}
-  distanceBetweenNodes: 2
-  lineYOffset: 0.5
 --- !u!1 &847760169
 GameObject:
   m_ObjectHideFlags: 0

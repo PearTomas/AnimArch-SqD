@@ -11,7 +11,6 @@ namespace Visualization.ClassDiagram.ComponentsInDiagram
         public GameObject VisualObjectHeader;
         public GameObject VisualObjectFooter;
         public GameObject LifeLine;
-
         public EntityInDiagram() 
         {}
     }

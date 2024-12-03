@@ -223,6 +223,10 @@ namespace Visualization.Animation
                 yield break;
             }
 
+            sequenceDiagram.AddEntities(currentProgramInstance.ExecutionSpace.Classes);
+            sequenceDiagram.ResetDiagram();
+            sequenceDiagram.LoadDiagram();
+
             SetupAnimation(startMethod, MethodExecutableCode);
 
             AnimationThread SuperThread = new AnimationThread(currentProgramInstance.CommandStack, currentProgramInstance, this);
