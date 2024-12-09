@@ -10148,6 +10148,11 @@ MonoBehaviour:
     type: 3}
   sequenceArrowMesssage: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
     type: 3}
+  sequenceArrowDS: {fileID: 2080456151626043265, guid: b4e29ebd97adfc94f8e3317e552c9804,
+    type: 3}
+  sequenceArrowSD: {fileID: 1523548488617654, guid: 3dbd934c74a95a741a4fa0f9d894e458,
+    type: 3}
+  sequenceMessage: {fileID: 100000, guid: ddc15c0da3841364b90e38453e021c3b, type: 3}
   activityInitialPrefab: {fileID: 1226358218867430, guid: 204995dbba78b89409f029217f15cb08,
     type: 3}
   activityFinalPrefab: {fileID: 1226358218867430, guid: 1be686612295d7949a1be32ca1e1dbb3,

@@ -114,16 +114,18 @@ namespace AnimArch.Visualization.Diagrams
             Entity.VisualObjectHeader = node;
             node.SetActive(true);
             node.name = Entity.EntityName;
-            var header = node.transform.Find("Header/Entity");
-            header.GetComponent<TextMeshProUGUI>().text = node.name;
+
+            EntityTextSetter textSetter = node.GetComponent<EntityTextSetter>();
+            textSetter.setText(node.name);
 
             //Footer
             node = graph.AddNode();
             Entity.VisualObjectFooter = node;
             node.SetActive(true);
             node.name = Entity.EntityName;
-            header = node.transform.Find("Header/Entity");
-            header.GetComponent<TextMeshProUGUI>().text = node.name;
+            
+            textSetter = node.GetComponent<EntityTextSetter>();
+            textSetter.setText(node.name);
         }
 
         public void AddEntities(List<CDClass> Classes)
@@ -159,12 +161,26 @@ namespace AnimArch.Visualization.Diagrams
             node.SetActive(true);
 
             // arrowMessage (set text)
-            graph.nodePrefab = messageInDiagram.VisualObjectArrow;
-            node = graph.AddNode();
-            messageInDiagram.VisualObjectArrow = node;
-            node.SetActive(true);
-            var messageText = node.transform.Find("Message");
-            messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
+            //graph.nodePrefab = messageInDiagram.Arrow;
+
+            
+            // var messageText = node.transform.Find("Message");
+            // messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
+        }
+
+        public void generateArrow(MessageInDiagram messageInDiagram){
+            var edge = graph.AddEdge(messageInDiagram.ActivationBlockSource, messageInDiagram.ActivationBlockDestination,  messageInDiagram.Arrow);
+            
+            // var uEdge = edge.GetComponent<UEdge>();
+            // uEdge.Points = new Vector2[]
+            // {
+            //     messageInDiagram.ActivationBlockSource.transform.position,
+            //     messageInDiagram.ActivationBlockDestination.transform.position
+            // };
+            // graph.nodePrefab = messageInDiagram.Arrow;
+            // node = graph.AddNode();
+            // messageInDiagram.Arrow = node;
+            // node.SetActive(true);
         }
     }
 }

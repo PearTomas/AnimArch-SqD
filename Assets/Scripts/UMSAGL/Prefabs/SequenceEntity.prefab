@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 114654169875532780}
   - component: {fileID: 114752474515285174}
   - component: {fileID: 54018352948757740}
+  - component: {fileID: 3505784301563700545}
   m_Layer: 5
   m_Name: SequenceEntity
   m_TagString: Untagged
@@ -166,6 +167,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3505784301563700545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226358218867430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc5987e60a4659429fd66190a27f91b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Entity: {fileID: 1634513748961536}
+  Name: {fileID: 1828023255597076}
 --- !u!1 &1634513748961536
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +195,7 @@ GameObject:
   - component: {fileID: 114281553092480118}
   - component: {fileID: 114024745556855476}
   m_Layer: 5
-  m_Name: Header
+  m_Name: Entity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,7 +316,7 @@ GameObject:
   - component: {fileID: 114466928306324720}
   - component: {fileID: 1241997347917799074}
   m_Layer: 5
-  m_Name: Entity
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -401,7 +416,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Entity
+  m_text: asdoiasdoisajdnxcscs
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

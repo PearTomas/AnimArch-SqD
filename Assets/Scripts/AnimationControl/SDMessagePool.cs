@@ -36,7 +36,8 @@ namespace OALProgramControl
             MessageInDiagram messageInDiagram = new MessageInDiagram
                 {
                     MessageText = Message,
-                    VisualObjectArrow = DiagramPool.Instance.sequenceArrowMesssage,
+                    VisualObjectMessage = DiagramPool.Instance.sequenceMessage,
+                    Arrow = DiagramPool.Instance.sequenceArrowSD,
                     ActivationBlockSource = DiagramPool.Instance.sequenceActivationBlock,
                     ActivationBlockDestination = DiagramPool.Instance.sequenceActivationBlock,
                     SourceEntity = EntitySource,
@@ -69,11 +70,12 @@ namespace OALProgramControl
                     new Vector3(X2, Y-150, 0), 
                     Quaternion.identity);
 
-                messageInDiagram.VisualObjectArrow.transform.SetPositionAndRotation(
-                    new Vector3((X1+X2)/2, Y-150, 0), 
-                    Quaternion.identity);
+                // messageInDiagram.Arrow.transform.SetPositionAndRotation(
+                //     new Vector3((X1+X2)/2, Y-150, 0), 
+                //     Quaternion.identity);
+                sequenceDiagram.generateArrow(messageInDiagram);
+
             }
-            
         }
     }
 }
