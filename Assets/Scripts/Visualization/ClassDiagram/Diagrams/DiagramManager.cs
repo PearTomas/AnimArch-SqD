@@ -27,7 +27,6 @@ namespace Visualization.ClassDiagram.Diagrams
 
         public void ChangeToQueue()
         {
-            Debug.Log("DLC" + diagramList.Count);
             for (var i = 0; i < diagramList.Count; i++)
             {
                 var diagram = diagramList[i];
@@ -36,6 +35,7 @@ namespace Visualization.ClassDiagram.Diagrams
                     if (diagram.graph)
                     {
                         diagram.graph.transform.position = new Vector3(0, 0, Offset * i);
+                        
                     }
                 }
             }
@@ -57,23 +57,23 @@ namespace Visualization.ClassDiagram.Diagrams
         {
             var xOffset = 1800;
             var yOffset = 1800;
-            var cnt = 0;
-            for (var j = 1; j >= 0; j--)
+            var diagramIndex = 0;
+            var rows = (int)Math.Ceiling(Math.Sqrt(diagramList.Count));
+            var cols = (int)Math.Ceiling((double)diagramList.Count / rows);
+
+            for (var j = 0; j < rows; j++)
             {
-                for (var i = 1; i >= 0; i--)
+                for (var i = 0; i < cols; i++)
                 {
-                    if (diagramList.Count > cnt)
-                    {
-                        var diagram = diagramList[cnt];
-                        cnt++;
-                        if (diagram)
-                        {
-                            if (diagram.graph)
-                            {
-                                diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
-                            }
-                        }
-                    }
+                    if (diagramIndex >= diagramList.Count)
+                        return;
+                    var diagram = diagramList[diagramIndex++];
+                    if (!diagram || !diagram.graph)
+                        return;
+                    
+                    // set grid position for diagrams in the list.
+                    diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
+                    
                 }
             }
         }
