@@ -20,7 +20,7 @@ namespace Visualization.UI
         public bool ZoomingIn { private set; get; }
         public bool ZoomingOut { private set; get; }
         public bool IsJump { set; get; }
-        public bool Is25D { set; get; }
+        private bool Is25D { set; get; }
         
         public bool Reset { set; get; }
         public int InterGraphJump { private set; get; }

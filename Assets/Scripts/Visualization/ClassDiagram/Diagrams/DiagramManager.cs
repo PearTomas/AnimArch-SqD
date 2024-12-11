@@ -27,6 +27,7 @@ namespace Visualization.ClassDiagram.Diagrams
 
         public void ChangeToQueue()
         {
+            Debug.Log("DLC" + diagramList.Count);
             for (var i = 0; i < diagramList.Count; i++)
             {
                 var diagram = diagramList[i];
@@ -35,7 +36,6 @@ namespace Visualization.ClassDiagram.Diagrams
                     if (diagram.graph)
                     {
                         diagram.graph.transform.position = new Vector3(0, 0, Offset * i);
-                        
                     }
                 }
             }
@@ -62,13 +62,16 @@ namespace Visualization.ClassDiagram.Diagrams
             {
                 for (var i = 1; i >= 0; i--)
                 {
-                    var diagram = diagramList[cnt];
-                    cnt++;
-                    if (diagram)
+                    if (diagramList.Count > cnt)
                     {
-                        if (diagram.graph)
+                        var diagram = diagramList[cnt];
+                        cnt++;
+                        if (diagram)
                         {
-                            diagram.graph.transform.position = new Vector3(i*xOffset, j*yOffset, 0);
+                            if (diagram.graph)
+                            {
+                                diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
+                            }
                         }
                     }
                 }
