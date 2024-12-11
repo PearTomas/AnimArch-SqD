@@ -55,8 +55,15 @@ namespace AnimArch.Visualization.Diagrams
             CreateGraph();
             Generate();
             ManualLayout();
+            offsetZ = 800;
+            
     
             graph.transform.position = new Vector3(0, 0, 3*offsetZ);
+            foreach (MessageInDiagram messageInDiagram in SDMessagePool.Messages){
+                this.generateArrow(messageInDiagram);
+            }
+
+            
         }
 
 
@@ -169,14 +176,14 @@ namespace AnimArch.Visualization.Diagrams
         }
 
         public void generateArrow(MessageInDiagram messageInDiagram){
-            var edge = graph.AddEdge(messageInDiagram.ActivationBlockSource, messageInDiagram.ActivationBlockDestination,  messageInDiagram.Arrow);
+            var edge = graph.AddEdgeSeq(messageInDiagram.ActivationBlockSource, messageInDiagram.ActivationBlockDestination,  messageInDiagram.Arrow);
             
-            // var uEdge = edge.GetComponent<UEdge>();
-            // uEdge.Points = new Vector2[]
-            // {
-            //     messageInDiagram.ActivationBlockSource.transform.position,
-            //     messageInDiagram.ActivationBlockDestination.transform.position
-            // };
+            var uEdge = edge.GetComponent<UEdge>();
+            uEdge.Points = new Vector2[]
+            {
+                messageInDiagram.ActivationBlockSource.transform.position,
+                messageInDiagram.ActivationBlockDestination.transform.position
+            };
             // graph.nodePrefab = messageInDiagram.Arrow;
             // node = graph.AddNode();
             // messageInDiagram.Arrow = node;

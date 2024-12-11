@@ -128,6 +128,26 @@ namespace UMSAGL.Scripts
             return go;
         }
 
+        public GameObject AddEdgeSeq(GameObject from, GameObject to, GameObject prefab)
+        {
+            var go = Instantiate(prefab, units);
+            go.transform.SetSiblingIndex(0);
+            var uEdge = go.GetComponent<UEdge>();
+
+            var edge = new Edge(from.GetComponent<UNode>().GraphNode, to.GetComponent<UNode>().GraphNode)
+            {
+                LineWidth = ToGraphSpace(uEdge.Width),
+                UserData = go
+            };
+            go.name += edge.ToString();
+            uEdge.GraphEdge = edge;
+            _graph.Edges.Add(edge);
+            // We cannot wait (i.e. use UpdateGraph()), or the edge will be drawn too late
+            //LayoutHelpers.RouteAndLabelEdges(_graph, _settings, _graph.Edges);
+            RedrawEdges();
+            return go;
+        }
+
         public void RemoveEdge(GameObject edge)
         {
             _graph.Edges.Remove(edge.GetComponent<UEdge>().GraphEdge);

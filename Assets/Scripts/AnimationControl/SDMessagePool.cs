@@ -37,7 +37,7 @@ namespace OALProgramControl
                 {
                     MessageText = Message,
                     VisualObjectMessage = DiagramPool.Instance.sequenceMessage,
-                    Arrow = DiagramPool.Instance.sequenceArrowSD,
+                    Arrow = DiagramPool.Instance.associationFullPrefab,
                     ActivationBlockSource = DiagramPool.Instance.sequenceActivationBlock,
                     ActivationBlockDestination = DiagramPool.Instance.sequenceActivationBlock,
                     SourceEntity = EntitySource,
@@ -58,22 +58,26 @@ namespace OALProgramControl
         public void LayoutMessagesWithActivationBlocks()
         {
             foreach (MessageInDiagram messageInDiagram in Messages) {
+                
                 float X1 = messageInDiagram.SourceEntity.LifeLine.transform.position.x;
                 float Y = messageInDiagram.SourceEntity.VisualObjectHeader.transform.position.y;
                 messageInDiagram.ActivationBlockSource.transform.SetPositionAndRotation(
                     new Vector3(X1,Y-150, 0), 
-                    Quaternion.identity);
+                    Quaternion.identity
+                );
 
                 float X2 = messageInDiagram.DestinationEntity.LifeLine.transform.position.x;
                 Y = messageInDiagram.DestinationEntity.VisualObjectHeader.transform.position.y;
                 messageInDiagram.ActivationBlockDestination.transform.SetPositionAndRotation(
                     new Vector3(X2, Y-150, 0), 
-                    Quaternion.identity);
+                    Quaternion.identity
+                );
 
+                
                 // messageInDiagram.Arrow.transform.SetPositionAndRotation(
                 //     new Vector3((X1+X2)/2, Y-150, 0), 
-                //     Quaternion.identity);
-                sequenceDiagram.generateArrow(messageInDiagram);
+                //     Quaternion.identity
+                // );
 
             }
         }
