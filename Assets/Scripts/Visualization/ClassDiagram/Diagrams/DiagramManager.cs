@@ -51,6 +51,7 @@ namespace Visualization.ClassDiagram.Diagrams
             {
                 ChangeToGrid();
             }
+            PinCamToDiagramLayout();
         }
 
         private void ChangeToGrid()
@@ -73,10 +74,34 @@ namespace Visualization.ClassDiagram.Diagrams
                     
                     // set grid position for diagrams in the list.
                     diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
-                    
                 }
             }
         }
-        
+
+        private void PinCamToDiagramLayout()
+        {
+            var camera = Camera.main;
+            if (camera == null) return;
+
+            var bounds = new Bounds(Vector3.zero, Vector3.zero);
+            foreach (var diagram in diagramList)
+            {
+                if (!diagram || !diagram.graph)
+                    return;
+                
+                bounds.Encapsulate(diagram.graph.transform.position);
+                
+            }
+            
+            // TODO: eatch call of this method the camera is moved to back of couple of px, with cause that eventually
+            // it will be moved to far from the diagram (it is no longer visible)
+            const float cameraPadding = 1f;
+            camera.transform.position = 
+                new Vector3(
+                    bounds.center.x, bounds.center.y, camera.transform.position.z) - 
+                    camera.transform.forward * (Mathf.Max(bounds.size.x, bounds.size.y) / cameraPadding
+                );
+            camera.orthographicSize = Mathf.Max(bounds.size.x, bounds.size.y) / 2;
+        }
     }
 }
