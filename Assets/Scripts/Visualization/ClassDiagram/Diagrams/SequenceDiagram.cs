@@ -20,22 +20,17 @@ namespace AnimArch.Visualization.Diagrams
     public class SequenceDiagram : Diagram
     {
         public Graph graph;
-
-        // list of entities (contains lifeline)
         public List<EntityInDiagram> Entities { get; private set; }
-        public SDMessagePool SDMessagePool;
-        private float InitialPositionY;
-        private float OffsetX;
-        private float OffsetY;
-        private float DistanceFromMiddleY;
+        public SeqDMessagePool SeqDMessagePool;
+        private float InitialPositionY = 300;
+        private float OffsetX = 200;
+        private float OffsetY = 200;
+        private float OffsetZ = 800;
 
         private void Awake()
         {
-            SDMessagePool = new SDMessagePool();
-            SDMessagePool.sequenceDiagram = this;
-            InitialPositionY = 300;
-            OffsetY = 200;
-            OffsetX = 200;
+            SeqDMessagePool = new SeqDMessagePool();
+            SeqDMessagePool.sequenceDiagram = this;
             DiagramPool.Instance.SequenceDiagram = this;
             Entities = new List<EntityInDiagram>();
             ResetDiagram();
@@ -55,17 +50,7 @@ namespace AnimArch.Visualization.Diagrams
             CreateGraph();
             Generate();
             ManualLayout();
-            offsetZ = 800;
-            
-    
-            graph.transform.position = new Vector3(0, 0, 3*offsetZ);
-            foreach (MessageInDiagram messageInDiagram in SDMessagePool.Messages){
-                this.generateArrow(messageInDiagram);
-            }
-
-            
         }
-
 
         private Graph CreateGraph()
         {
@@ -73,28 +58,6 @@ namespace AnimArch.Visualization.Diagrams
             graph = go.GetComponent<Graph>();
             graph.nodePrefab = DiagramPool.Instance.sequenceEntityPrefab;
             return graph;
-        }
-        
-        public void ManualLayout()
-        {
-            int i = 0;
-            foreach (EntityInDiagram entityInDiagram in Entities)
-            {
-                entityInDiagram.LifeLine.transform.SetPositionAndRotation(
-                    new Vector3(i * OffsetX, InitialPositionY - OffsetY, 0), 
-                    Quaternion.identity);
-
-                entityInDiagram.VisualObjectHeader.transform.SetPositionAndRotation(
-                    new Vector3(i * OffsetX, InitialPositionY, 0), 
-                    Quaternion.identity);
-
-                entityInDiagram.VisualObjectFooter.transform.SetPositionAndRotation(
-                    new Vector3(i * OffsetX, InitialPositionY - 2 * OffsetY, 0), 
-                    Quaternion.identity);
-                i++;
-            }
-
-            SDMessagePool.LayoutMessagesWithActivationBlocks();
         }
 
         public void Generate()
@@ -104,7 +67,7 @@ namespace AnimArch.Visualization.Diagrams
                 GenerateObject(Entities[i]);
             }
 
-            SDMessagePool.GenerateMessagesWithActivationBlocks();
+            SeqDMessagePool.GenerateMessagesWithActivationBlocksAndArrows();
         }
 
         private void GenerateObject(EntityInDiagram Entity)
@@ -135,6 +98,29 @@ namespace AnimArch.Visualization.Diagrams
             textSetter.setText(node.name);
         }
 
+        public void ManualLayout()
+        {
+            int i = 0;
+            foreach (EntityInDiagram entityInDiagram in Entities)
+            {
+                entityInDiagram.LifeLine.transform.SetPositionAndRotation(
+                    new Vector3(i * OffsetX, InitialPositionY - OffsetY, 0), 
+                    Quaternion.identity);
+
+                entityInDiagram.VisualObjectHeader.transform.SetPositionAndRotation(
+                    new Vector3(i * OffsetX, InitialPositionY, 0), 
+                    Quaternion.identity);
+
+                entityInDiagram.VisualObjectFooter.transform.SetPositionAndRotation(
+                    new Vector3(i * OffsetX, InitialPositionY - 2 * OffsetY, 0), 
+                    Quaternion.identity);
+                i++;
+            }
+
+            SeqDMessagePool.LayoutMessagesWithActivationBlocks();
+            graph.transform.position = new Vector3(0, 0, 3*OffsetZ);
+        }
+
         public void AddEntities(List<CDClass> Classes)
         {
             Entities = new List<EntityInDiagram>();
@@ -150,44 +136,8 @@ namespace AnimArch.Visualization.Diagrams
             Entities.Add(entityInDiagram);
             }
 
-            SDMessagePool.addMessage(Entities[8], Entities[9], "getName()");
-        }
-
-        public void GenerateMessage(MessageInDiagram messageInDiagram)
-        {
-            // activationblockSource
-            graph.nodePrefab = messageInDiagram.ActivationBlockSource;
-            var node = graph.AddNode();
-            messageInDiagram.ActivationBlockSource = node;
-            node.SetActive(true);
-
-            // activationblockDestination
-            graph.nodePrefab = messageInDiagram.ActivationBlockDestination;
-            node = graph.AddNode();
-            messageInDiagram.ActivationBlockDestination = node;
-            node.SetActive(true);
-
-            // arrowMessage (set text)
-            //graph.nodePrefab = messageInDiagram.Arrow;
-
-            
-            // var messageText = node.transform.Find("Message");
-            // messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
-        }
-
-        public void generateArrow(MessageInDiagram messageInDiagram){
-            var edge = graph.AddEdgeSeq(messageInDiagram.ActivationBlockSource, messageInDiagram.ActivationBlockDestination,  messageInDiagram.Arrow);
-            
-            var uEdge = edge.GetComponent<UEdge>();
-            uEdge.Points = new Vector2[]
-            {
-                messageInDiagram.ActivationBlockSource.transform.position,
-                messageInDiagram.ActivationBlockDestination.transform.position
-            };
-            // graph.nodePrefab = messageInDiagram.Arrow;
-            // node = graph.AddNode();
-            // messageInDiagram.Arrow = node;
-            // node.SetActive(true);
+            // example of message
+            SeqDMessagePool.addMessage(Entities[8], Entities[9], "getName()");
         }
     }
 }

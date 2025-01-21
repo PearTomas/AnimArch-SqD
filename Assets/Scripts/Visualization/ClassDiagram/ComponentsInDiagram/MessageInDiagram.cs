@@ -6,7 +6,7 @@ namespace Visualization.ClassDiagram.ComponentsInDiagram
     public class MessageInDiagram
     {
         public string MessageText;
-        public GameObject VisualObjectMessage;
+        public GameObject Message;
         public GameObject Arrow;
         public GameObject ActivationBlockSource;
         public GameObject ActivationBlockDestination;
