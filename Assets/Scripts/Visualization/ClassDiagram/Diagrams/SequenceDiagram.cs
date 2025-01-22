@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,13 +64,13 @@ namespace AnimArch.Visualization.Diagrams
         {
             for (int i = 0; i < Entities.Count; i++)
             {
-                GenerateObject(Entities[i]);
+                GenerateEntity(Entities[i]);
             }
 
             SeqDMessagePool.GenerateMessagesWithActivationBlocksAndArrows();
         }
 
-        private void GenerateObject(EntityInDiagram Entity)
+        private void GenerateEntity(EntityInDiagram Entity)
         {
             //Lifeline
             graph.nodePrefab = DiagramPool.Instance.sequenceLinePrefab;
