@@ -15,7 +15,7 @@ namespace Visualization.ClassDiagram
         public GameObject sequenceEntityPrefab;
         public GameObject sequenceLinePrefab;
         public GameObject sequenceActivationBlock;
-        public GameObject sequenceArrowMesssage;
+        public GameObject sequenceArrowMessage;
         public GameObject sequenceArrowDS;
         public GameObject sequenceArrowSD;
         public GameObject sequenceMessage;

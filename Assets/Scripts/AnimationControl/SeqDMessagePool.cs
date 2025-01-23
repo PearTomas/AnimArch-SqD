@@ -38,7 +38,7 @@ namespace OALProgramControl
             {
                 MessageText = Message,
                 Message = DiagramPool.Instance.sequenceMessage,
-                Arrow = DiagramPool.Instance.associationFullPrefab,
+                Arrow = DiagramPool.Instance.sequenceArrowMessage,
                 ActivationBlockSource = DiagramPool.Instance.sequenceActivationBlock,
                 ActivationBlockDestination = DiagramPool.Instance.sequenceActivationBlock,
                 SourceEntity = EntitySource,
@@ -73,29 +73,30 @@ namespace OALProgramControl
             node.SetActive(true);
 
             // arrowMessage (set text)
-            //graph.nodePrefab = messageInDiagram.Arrow;
+            graph.nodePrefab = messageInDiagram.Arrow;
+            node = graph.AddNode();
+            messageInDiagram.Arrow = node;
+            var messageText = node.transform.Find("Message");
+            messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
 
-            // var messageText = node.transform.Find("Message");
-            // messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
-
-            generateArrow(messageInDiagram);
+            //generateArrow(messageInDiagram);
         }
 
-        public void generateArrow(MessageInDiagram messageInDiagram)
-        {
-            var edge = graph.AddEdgeSeq(messageInDiagram.ActivationBlockSource, messageInDiagram.ActivationBlockDestination,  messageInDiagram.Arrow);
+        // public void generateArrow(MessageInDiagram messageInDiagram)
+        // {
+        //     var edge = graph.AddEdgeSeq(messageInDiagram.ActivationBlockSource, messageInDiagram.ActivationBlockDestination,  messageInDiagram.Arrow);
             
-            var uEdge = edge.GetComponent<UEdge>();
-            uEdge.Points = new Vector2[]
-            {
-                messageInDiagram.ActivationBlockSource.transform.position,
-                messageInDiagram.ActivationBlockDestination.transform.position
-            };
-            // graph.nodePrefab = messageInDiagram.Arrow;
-            // node = graph.AddNode();
-            // messageInDiagram.Arrow = node;
-            // node.SetActive(true);
-        }
+        //     var uEdge = edge.GetComponent<UEdge>();
+        //     uEdge.Points = new Vector2[]
+        //     {
+        //         messageInDiagram.ActivationBlockSource.transform.position,
+        //         messageInDiagram.ActivationBlockDestination.transform.position
+        //     };
+        //     // graph.nodePrefab = messageInDiagram.Arrow;
+        //     // node = graph.AddNode();
+        //     // messageInDiagram.Arrow = node;
+        //     // node.SetActive(true);
+        // }
 
         public void LayoutMessagesWithActivationBlocks()
         {
@@ -115,10 +116,10 @@ namespace OALProgramControl
                     Quaternion.identity
                 );
 
-                // messageInDiagram.Arrow.transform.SetPositionAndRotation(
-                //     new Vector3((X1+X2)/2, Y-150, 0), 
-                //     Quaternion.identity
-                // );
+                messageInDiagram.Arrow.transform.SetPositionAndRotation(
+                    new Vector3((X1+X2)/2, Y-150, 0), 
+                    Quaternion.identity
+                );
             }
         }
     }
