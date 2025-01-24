@@ -10146,7 +10146,7 @@ MonoBehaviour:
     type: 3}
   sequenceActivationBlock: {fileID: 1156878998517402, guid: ee2717e8d87af0b49bd5c1e6e384c2ea,
     type: 3}
-  sequenceArrowMesssage: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
+  sequenceArrowMessage: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
     type: 3}
   sequenceArrowDS: {fileID: 2080456151626043265, guid: b4e29ebd97adfc94f8e3317e552c9804,
     type: 3}
