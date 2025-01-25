@@ -83,25 +83,47 @@ namespace Visualization.ClassDiagram.Diagrams
             var camera = Camera.main;
             if (camera == null) return;
 
-            var bounds = new Bounds(Vector3.zero, Vector3.zero);
+            var bounds = new Bounds();
+            bool hasInitBounds = false;
             foreach (var diagram in diagramList)
             {
                 if (!diagram || !diagram.graph)
                     return;
                 
+                if (!hasInitBounds)
+                {
+                    bounds = new Bounds(diagram.graph.transform.position, Vector3.zero);
+                    hasInitBounds = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(diagram.graph.transform.position);
+                }
+                
                 bounds.Encapsulate(diagram.graph.transform.position);
                 
             }
             
-            // TODO: eatch call of this method the camera is moved to back of couple of px, with cause that eventually
-            // it will be moved to far from the diagram (it is no longer visible)
-            const float cameraPadding = 1f;
-            camera.transform.position = 
-                new Vector3(
-                    bounds.center.x, bounds.center.y, camera.transform.position.z) - 
-                    camera.transform.forward * (Mathf.Max(bounds.size.x, bounds.size.y) / cameraPadding
-                );
-            camera.orthographicSize = Mathf.Max(bounds.size.x, bounds.size.y) / 2;
+            // Center camera on X/Y but keep original Z position
+            camera.transform.position = new Vector3(
+                bounds.center.x,
+                bounds.center.y,
+                camera.transform.position.z  // Maintain original Z position
+            );
+
+            // Calculate required zoom level based on diagram bounds
+            float aspectRatio = camera.aspect;
+            float diagramWidth = bounds.size.x;
+            float diagramHeight = bounds.size.y;
+
+            // Calculate required size based on both width and height
+            float sizeBasedOnWidth = diagramWidth / (2 * aspectRatio);
+            float sizeBasedOnHeight = diagramHeight / 2;
+
+            // Use whichever requires more zoom-out
+            camera.orthographicSize = Mathf.Max(sizeBasedOnWidth, sizeBasedOnHeight);
+            
+            const float paddingFactor = 1.1f;
+            camera.orthographicSize *= paddingFactor;
         }
-    }
 }
