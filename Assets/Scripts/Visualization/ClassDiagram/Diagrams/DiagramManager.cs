@@ -40,20 +40,7 @@ namespace Visualization.ClassDiagram.Diagrams
                 }
             }
         }
-
-        public void ChangeLayout(Boolean IsGridLayout)
-        {
-            if (IsGridLayout)
-            {
-                ChangeToQueue();
-            }
-            else
-            {
-                ChangeToGrid();
-            }
-            PinCamToDiagramLayout();
-        }
-
+        
         private void ChangeToGrid()
         {
             var xOffset = 1800;
@@ -76,6 +63,19 @@ namespace Visualization.ClassDiagram.Diagrams
                     diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
                 }
             }
+        }
+        
+        public void ChangeLayout(Boolean IsGridLayout)
+        {
+            if (IsGridLayout)
+            {
+                ChangeToQueue();
+            }
+            else
+            {
+                ChangeToGrid();
+            }
+            PinCamToDiagramLayout();
         }
 
         private void PinCamToDiagramLayout()

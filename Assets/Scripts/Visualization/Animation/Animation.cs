@@ -55,15 +55,11 @@ namespace Visualization.Animation
 
         private void Awake()
         {
-            //classDiagram = GameObject.Find("ClassDiagram").GetComponent<ClassDiagram.Diagrams.ClassDiagram>();
-            //objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
-            //activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
             DiagramManager = DiagramManager.Instance;
 
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
             
-            //DiagramManager.Reposition();
         }
 
         private void ParseAnimationMethods()
@@ -272,13 +268,11 @@ namespace Visualization.Animation
         {
             DiagramManager.activityDiagram.AddActivityInDiagram(commandCode);
             DiagramManager.activityDiagram.RepositionActivities();
-            // activityDiagram.AddRelation();
         }
         public void AddFinalActivityToDiagram()
         {
             DiagramManager.activityDiagram.AddFinalActivityInDiagram();
             DiagramManager.activityDiagram.RepositionActivities();
-            // activityDiagram.AddRelation();
         }
         private IEnumerator ResolveCreateObject(EXECommand currentCommand, bool Animate = true, bool AnimateNewObjects = true)
         {
