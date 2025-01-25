@@ -1,6 +1,7 @@
 ﻿using AnimArch.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
+using Visualization.ClassDiagram.Diagrams;
 
 namespace Visualization.UI
 {
@@ -19,6 +20,7 @@ namespace Visualization.UI
         public bool ZoomingIn { private set; get; }
         public bool ZoomingOut { private set; get; }
         public bool IsJump { set; get; }
+        private bool Is25D { set; get; }
         
         public bool Reset { set; get; }
         public int InterGraphJump { private set; get; }
@@ -30,6 +32,11 @@ namespace Visualization.UI
         public void ZoomIn(bool enabled)
         {
             ZoomingIn = enabled;
+        }
+        public void Change2D()
+        {
+            DiagramManager.Instance.ChangeLayout(Is25D);
+            Is25D = !Is25D;
         }
 
         public void Jump()
@@ -113,6 +120,8 @@ namespace Visualization.UI
 
             SelectTool(Tool.CameraMovement);
             OnButtonClicked(buttons[0]);
+
+            Is25D = false;
         }
     }
 }
