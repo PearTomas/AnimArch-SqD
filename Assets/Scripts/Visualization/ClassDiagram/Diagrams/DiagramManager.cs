@@ -12,6 +12,7 @@ namespace Visualization.ClassDiagram.Diagrams
         [SerializeField] public ClassDiagram classDiagram;
         [SerializeField] public ObjectDiagram objectDiagram;
         [SerializeField] public ActivityDiagram activityDiagram;
+        [SerializeField] public SequenceDiagram sequenceDiagram;
 
         private List<Diagram> diagramList;
 
@@ -21,7 +22,8 @@ namespace Visualization.ClassDiagram.Diagrams
             {
                 classDiagram,
                 activityDiagram,
-                objectDiagram
+                objectDiagram,
+                sequenceDiagram
             };
         }
 
@@ -35,7 +37,6 @@ namespace Visualization.ClassDiagram.Diagrams
                     if (diagram.graph)
                     {
                         diagram.graph.transform.position = new Vector3(0, 0, Offset * i);
-
                     }
                 }
             }
@@ -43,8 +44,8 @@ namespace Visualization.ClassDiagram.Diagrams
 
         private void ChangeToGrid()
         {
-            var xOffset = 1800;
-            var yOffset = 1800;
+            var xOffset = 3000;
+            var yOffset = 3000;
             var diagramIndex = 0;
             var rows = (int)Math.Ceiling(Math.Sqrt(diagramList.Count));
             var cols = (int)Math.Ceiling((double)diagramList.Count / rows);

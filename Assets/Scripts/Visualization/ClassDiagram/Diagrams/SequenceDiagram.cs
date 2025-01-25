@@ -18,8 +18,9 @@ using OALProgramControl;
 namespace AnimArch.Visualization.Diagrams
 {
     public class SequenceDiagram : Diagram
+    
     {
-        public Graph graph;
+        // public Graph graph;
         public List<EntityInDiagram> Entities { get; private set; }
         public SeqDMessagePool SeqDMessagePool;
         private float InitialPositionY = 300;
@@ -118,7 +119,6 @@ namespace AnimArch.Visualization.Diagrams
             }
 
             SeqDMessagePool.LayoutMessagesWithActivationBlocks();
-            graph.transform.position = new Vector3(0, 0, 3*OffsetZ);
         }
 
         public void AddEntities(List<CDClass> Classes)

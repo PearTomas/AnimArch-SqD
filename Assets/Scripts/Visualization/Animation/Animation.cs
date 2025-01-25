@@ -26,7 +26,6 @@ namespace Visualization.Animation
     public class Animation : Singleton<Animation>
     {
         public DiagramManager DiagramManager;
-        public SequenceDiagram sequenceDiagram {get; private set; }
         public Color classColor;
         public Color methodColor;
         public Color relationColor;
@@ -57,7 +56,7 @@ namespace Visualization.Animation
         private void Awake()
         {
             DiagramManager = DiagramManager.Instance;
-            sequenceDiagram = GameObject.Find("SequenceDiagram").GetComponent<SequenceDiagram>();
+            DiagramManager.sequenceDiagram = GameObject.Find("SequenceDiagram").GetComponent<SequenceDiagram>();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }
@@ -218,9 +217,9 @@ namespace Visualization.Animation
                 yield break;
             }
 
-            sequenceDiagram.AddEntities(currentProgramInstance.ExecutionSpace.Classes);
-            sequenceDiagram.ResetDiagram();
-            sequenceDiagram.LoadDiagram();
+            DiagramManager.sequenceDiagram.AddEntities(currentProgramInstance.ExecutionSpace.Classes);
+            DiagramManager.sequenceDiagram.ResetDiagram();
+            DiagramManager.sequenceDiagram.LoadDiagram();
 
             SetupAnimation(startMethod, MethodExecutableCode);
 
