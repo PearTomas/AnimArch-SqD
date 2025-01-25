@@ -56,10 +56,9 @@ namespace Visualization.Animation
         private void Awake()
         {
             DiagramManager = DiagramManager.Instance;
-
+            DiagramManager.sequenceDiagram = GameObject.Find("SequenceDiagram").GetComponent<SequenceDiagram>();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
-            
         }
 
         private void ParseAnimationMethods()
@@ -217,6 +216,10 @@ namespace Visualization.Animation
             {
                 yield break;
             }
+
+            DiagramManager.sequenceDiagram.AddEntities(currentProgramInstance.ExecutionSpace.Classes);
+            DiagramManager.sequenceDiagram.ResetDiagram();
+            DiagramManager.sequenceDiagram.LoadDiagram();
 
             SetupAnimation(startMethod, MethodExecutableCode);
 
