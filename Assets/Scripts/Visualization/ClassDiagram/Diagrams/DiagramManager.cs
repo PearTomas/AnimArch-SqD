@@ -35,12 +35,12 @@ namespace Visualization.ClassDiagram.Diagrams
                     if (diagram.graph)
                     {
                         diagram.graph.transform.position = new Vector3(0, 0, Offset * i);
-                        
+
                     }
                 }
             }
         }
-        
+
         private void ChangeToGrid()
         {
             var xOffset = 1800;
@@ -58,13 +58,13 @@ namespace Visualization.ClassDiagram.Diagrams
                     var diagram = diagramList[diagramIndex++];
                     if (!diagram || !diagram.graph)
                         return;
-                    
+
                     // set grid position for diagrams in the list.
                     diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
                 }
             }
         }
-        
+
         public void ChangeLayout(Boolean IsGridLayout)
         {
             if (IsGridLayout)
@@ -75,6 +75,7 @@ namespace Visualization.ClassDiagram.Diagrams
             {
                 ChangeToGrid();
             }
+
             PinCamToDiagramLayout();
         }
 
@@ -89,7 +90,7 @@ namespace Visualization.ClassDiagram.Diagrams
             {
                 if (!diagram || !diagram.graph)
                     return;
-                
+
                 if (!hasInitBounds)
                 {
                     bounds = new Bounds(diagram.graph.transform.position, Vector3.zero);
@@ -99,16 +100,16 @@ namespace Visualization.ClassDiagram.Diagrams
                 {
                     bounds.Encapsulate(diagram.graph.transform.position);
                 }
-                
+
                 bounds.Encapsulate(diagram.graph.transform.position);
-                
+
             }
-            
+
             // Center camera on X/Y but keep original Z position
             camera.transform.position = new Vector3(
                 bounds.center.x,
                 bounds.center.y,
-                camera.transform.position.z  // Maintain original Z position
+                camera.transform.position.z // Maintain original Z position
             );
 
             // Calculate required zoom level based on diagram bounds
@@ -122,8 +123,9 @@ namespace Visualization.ClassDiagram.Diagrams
 
             // Use whichever requires more zoom-out
             camera.orthographicSize = Mathf.Max(sizeBasedOnWidth, sizeBasedOnHeight);
-            
+
             const float paddingFactor = 1.1f;
             camera.orthographicSize *= paddingFactor;
         }
+    }
 }
