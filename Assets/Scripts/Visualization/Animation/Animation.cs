@@ -25,9 +25,7 @@ namespace Visualization.Animation
     //Controls the entire animation process
     public class Animation : Singleton<Animation>
     {
-        public ClassDiagram.Diagrams.ClassDiagram classDiagram { get; private set;}
-        public ObjectDiagram objectDiagram { get; private set;}
-        public ActivityDiagram activityDiagram { get; private set; }
+        public DiagramManager DiagramManager;
         public Color classColor;
         public Color methodColor;
         public Color relationColor;
@@ -57,11 +55,11 @@ namespace Visualization.Animation
 
         private void Awake()
         {
-            classDiagram = GameObject.Find("ClassDiagram").GetComponent<ClassDiagram.Diagrams.ClassDiagram>();
-            objectDiagram = GameObject.Find("ObjectDiagram").GetComponent<ObjectDiagram>();
-            activityDiagram = GameObject.Find("ActivityDiagram").GetComponent<ActivityDiagram>();
+            DiagramManager = DiagramManager.Instance;
+
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
+            
         }
 
         private void ParseAnimationMethods()
@@ -146,10 +144,10 @@ namespace Visualization.Animation
         private void HighlightInitialMethod(CDMethod startMethod, CDClassInstance startingInstance)
         {
             Fillers = new List<GameObject>();
-            objectDiagram.ShowObject(AddObjectToDiagram(startingInstance));
+            DiagramManager.objectDiagram.ShowObject(AddObjectToDiagram(startingInstance));
 
-            Class caller = classDiagram.FindClassByName(startClassName).ParsedClass;
-            Method callerMethod = classDiagram.FindMethodByName(startClassName, startMethodName);
+            Class caller = DiagramManager.classDiagram.FindClassByName(startClassName).ParsedClass;
+            Method callerMethod = DiagramManager.classDiagram.FindMethodByName(startClassName, startMethodName);
 
             MethodInvocationInfo CallerCall = MethodInvocationInfo.CreateCallerOnlyInstance(startMethod, startingInstance);
             MethodInvocationInfo CalledCall = MethodInvocationInfo.CreateCalledOnlyInstance(startMethod, startingInstance);
@@ -222,6 +220,8 @@ namespace Visualization.Animation
 
             SetupAnimation(startMethod, MethodExecutableCode);
 
+            DiagramManager.ChangeToQueue();
+
             AnimationThread SuperThread = new AnimationThread(currentProgramInstance.CommandStack, currentProgramInstance, this);
             yield return StartCoroutine(SuperThread.Start());
 
@@ -245,7 +245,7 @@ namespace Visualization.Animation
                     float timeModifier = 2.2f;
                     yield return new WaitForSeconds(timeModifier * speedPerAnim);
                     Debug.LogError("EXECommandReturn activityDiagram.ClearDiagram()");
-                    activityDiagram.ClearDiagram();
+                    DiagramManager.activityDiagram.ClearDiagram();
                     isEXECommandReturn = false;
                 }
                 AddActivityToDiagram(CurrentCommand, commandCode);
@@ -261,20 +261,18 @@ namespace Visualization.Animation
 
         public ObjectInDiagram AddObjectToDiagram(CDClassInstance newObject, string name = null, bool showNewObject = true)
         {
-            ObjectInDiagram objectInDiagram = objectDiagram.AddObjectInDiagram(name, newObject, showNewObject);
+            ObjectInDiagram objectInDiagram = DiagramManager.objectDiagram.AddObjectInDiagram(name, newObject, showNewObject);
             return objectInDiagram;
         }
         private void AddActivityToDiagram(EXECommand currentCommand, string commandCode)
         {
-            activityDiagram.AddActivityInDiagram(commandCode);
-            activityDiagram.RepositionActivities();
-            // activityDiagram.AddRelation();
+            DiagramManager.activityDiagram.AddActivityInDiagram(commandCode);
+            DiagramManager.activityDiagram.RepositionActivities();
         }
         public void AddFinalActivityToDiagram()
         {
-            activityDiagram.AddFinalActivityInDiagram();
-            activityDiagram.RepositionActivities();
-            // activityDiagram.AddRelation();
+            DiagramManager.activityDiagram.AddFinalActivityInDiagram();
+            DiagramManager.activityDiagram.RepositionActivities();
         }
         private IEnumerator ResolveCreateObject(EXECommand currentCommand, bool Animate = true, bool AnimateNewObjects = true)
         {
@@ -301,8 +299,8 @@ namespace Visualization.Animation
 
                 if (!Animate)
                 {
-                    objectDiagram.ShowObject(objectInDiagram);
-                    objectDiagram.AddRelation(callerObject, createdObject, "ASSOCIATION");
+                    DiagramManager.objectDiagram.ShowObject(objectInDiagram);
+                    DiagramManager.objectDiagram.AddRelation(callerObject, createdObject, "ASSOCIATION");
                 }
                 else
                 {
@@ -328,7 +326,7 @@ namespace Visualization.Animation
                                 timeModifier = 1f;
                                 break;
                             case 2:
-                                objectDiagram.ShowObject(objectInDiagram);
+                                DiagramManager.objectDiagram.ShowObject(objectInDiagram);
                                 timeModifier = 0.5f;
                                 break;
                             case 6:
@@ -367,7 +365,7 @@ namespace Visualization.Animation
 
                     #endregion
 
-                    objectDiagram.AddRelation(callerObject, createdObject, "ASSOCIATION");
+                    DiagramManager.objectDiagram.AddRelation(callerObject, createdObject, "ASSOCIATION");
                 }
             }
             else
@@ -418,6 +416,7 @@ namespace Visualization.Animation
         {
             isPaused = false;
             StartCoroutine("Animate");
+            
         }
 
         //Couroutine that can be used to Highlight class for a given duration of time
@@ -458,12 +457,12 @@ namespace Visualization.Animation
 
         public IEnumerator AnimateFill(MethodInvocationInfo Call)
         {
-            RelationInDiagram relationInDiagram = classDiagram.FindEdgeInfo(Call.Relation?.RelationshipName);
+            RelationInDiagram relationInDiagram = DiagramManager.classDiagram.FindEdgeInfo(Call.Relation?.RelationshipName);
             GameObject edge = relationInDiagram?.VisualObject;
 
             if (edge != null)
             {
-                EdgeHighlightSubject.EdgesDrawingFinishedFlag finishedFlag = classDiagram.FindEdgeInfo(Call.Relation.RelationshipName).HighlightSubject.finishedFlag;
+                EdgeHighlightSubject.EdgesDrawingFinishedFlag finishedFlag = DiagramManager.classDiagram.FindEdgeInfo(Call.Relation.RelationshipName).HighlightSubject.finishedFlag;
                 if (edge.CompareTag("Generalization") || edge.CompareTag("Implements") ||
                     edge.CompareTag("Realisation"))
                 {
@@ -473,7 +472,7 @@ namespace Visualization.Animation
                 }
                 else
                 {
-                    yield return FillNewFiller(classDiagram.FindOwnerOfRelation(Call.Relation.RelationshipName),
+                    yield return FillNewFiller(DiagramManager.classDiagram.FindOwnerOfRelation(Call.Relation.RelationshipName),
                         Call.CalledMethod.OwningClass.Name, edge, Call, finishedFlag);
                 }
             }
@@ -531,7 +530,7 @@ namespace Visualization.Animation
                         return value.gameObject;
                 }
             }
-            return classDiagram.FindNode(className);
+            return DiagramManager.classDiagram.FindNode(className);
         }
 
         private void HighlightBackground(BackgroundHighlighter backgroundHighlighter, bool isToBeHighlighted)
@@ -562,7 +561,7 @@ namespace Visualization.Animation
 
         public void HighlightObjects(MethodInvocationInfo call, bool isToBeHighlighted)
         {
-            ClassInDiagram classByName = classDiagram.FindClassByName(call.CallerMethod.OwningClass.Name);
+            ClassInDiagram classByName = DiagramManager.classDiagram.FindClassByName(call.CallerMethod.OwningClass.Name);
 
             if (classByName == null)
             {
@@ -591,7 +590,7 @@ namespace Visualization.Animation
                 return;
             }
 
-            GameObject node = objectDiagram.FindByID(objectUniqueId).VisualObject;
+            GameObject node = DiagramManager.objectDiagram.FindByID(objectUniqueId).VisualObject;
             BackgroundHighlighter backgroundHighlighter = null;
             if (node != null)
             {
@@ -617,7 +616,7 @@ namespace Visualization.Animation
         }
         public void HighlightMethod(string className, string methodName, bool isToBeHighlighted)
         {
-            var node = classDiagram.FindNode(className);
+            var node = DiagramManager.classDiagram.FindNode(className);
             if (node)
             {
                 ClassTextHighligter classTextHighligter = node.GetComponent<ClassTextHighligter>();
@@ -664,7 +663,7 @@ namespace Visualization.Animation
                 return;
             }
 
-            var textHighlighter = objectDiagram.FindByID(cdClassInstanceId).VisualObject
+            var textHighlighter = DiagramManager.objectDiagram.FindByID(cdClassInstanceId).VisualObject
                 .GetComponent<ObjectTextHighlighter>();
             if (textHighlighter != null)
             {
@@ -678,7 +677,7 @@ namespace Visualization.Animation
         //Method used to Highlight/Unhighlight single edge by name, depending on bool value of argument 
         public void HighlightEdge(string relationshipName, bool isToBeHighlighted, MethodInvocationInfo Call)
         {
-            RelationInDiagram relationInDiagram = classDiagram.FindEdgeInfo(relationshipName);
+            RelationInDiagram relationInDiagram = DiagramManager.classDiagram.FindEdgeInfo(relationshipName);
 
             GameObject edge = relationInDiagram?.VisualObject;
 

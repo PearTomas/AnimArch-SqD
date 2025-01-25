@@ -22,14 +22,14 @@ namespace Visualization.Animation
 
                 if (methodCallInfo != null)
                 {
-                    animation.objectDiagram.AddRelation(methodCallInfo.CallerObject, methodCallInfo.CalledObject, "ASSOCIATION");
+                    animation.DiagramManager.objectDiagram.AddRelation(methodCallInfo.CallerObject, methodCallInfo.CalledObject, "ASSOCIATION");
                 }
             }
         }
 
         public override IEnumerator PerformRequest()
         {
-            ClassDiagram.Diagrams.ClassDiagram classDiagram = Animation.Instance.classDiagram;
+            ClassDiagram.Diagrams.ClassDiagram classDiagram = Animation.Instance.DiagramManager.classDiagram;
             Class called = classDiagram.FindClassByName(callInfo.CalledMethod.OwningClass.Name).ParsedClass;
             Method calledMethod = classDiagram.FindMethodByName(callInfo.CalledMethod.OwningClass.Name, callInfo.CalledMethod.Name);
             RelationInDiagram relation = classDiagram.FindEdgeInfo(callInfo.Relation?.RelationshipName);
