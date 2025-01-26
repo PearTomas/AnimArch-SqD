@@ -8096,6 +8096,7 @@ Transform:
   - {fileID: 1164213133}
   - {fileID: 126492978}
   - {fileID: 1930053199}
+  - {fileID: 838906256}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10138,6 +10139,19 @@ MonoBehaviour:
     type: 3}
   activityPrefab: {fileID: 1226358218867430, guid: 29ea50781798cac44b9a0005a201fa77,
     type: 3}
+  sequenceEntityPrefab: {fileID: 1226358218867430, guid: 87290dc73ceec474ab9f04f9f324a604,
+    type: 3}
+  sequenceLinePrefab: {fileID: 1226358218867430, guid: 0d9ba15091db95a4b91891a3a3dda14c,
+    type: 3}
+  sequenceActivationBlock: {fileID: 1156878998517402, guid: ee2717e8d87af0b49bd5c1e6e384c2ea,
+    type: 3}
+  sequenceArrowMessage: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
+    type: 3}
+  sequenceArrowDS: {fileID: 2080456151626043265, guid: b4e29ebd97adfc94f8e3317e552c9804,
+    type: 3}
+  sequenceArrowSD: {fileID: 1523548488617654, guid: 3dbd934c74a95a741a4fa0f9d894e458,
+    type: 3}
+  sequenceMessage: {fileID: 100000, guid: ddc15c0da3841364b90e38453e021c3b, type: 3}
   activityInitialPrefab: {fileID: 1226358218867430, guid: 204995dbba78b89409f029217f15cb08,
     type: 3}
   activityFinalPrefab: {fileID: 1226358218867430, guid: 1be686612295d7949a1be32ca1e1dbb3,
@@ -10191,6 +10205,7 @@ MonoBehaviour:
   ClassDiagram: {fileID: 1164213134}
   ObjectDiagram: {fileID: 0}
   ActivityDiagram: {fileID: 0}
+  SequenceDiagram: {fileID: 0}
   RelationsClassToObject: []
 --- !u!1 &250727387
 GameObject:
@@ -20676,6 +20691,7 @@ MonoBehaviour:
   classDiagram: {fileID: 1164213134}
   objectDiagram: {fileID: 126492979}
   activityDiagram: {fileID: 1930053200}
+  sequenceDiagram: {fileID: 838906257}
 --- !u!1 &496680291
 GameObject:
   m_ObjectHideFlags: 0
@@ -33855,6 +33871,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837492840}
   m_CullTransparentMesh: 0
+--- !u!1 &838906255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 838906256}
+  - component: {fileID: 838906257}
+  m_Layer: 0
+  m_Name: SequenceDiagram
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &838906256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838906255}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 600}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 189701878}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &838906257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838906255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86632a4412bb1474cad8ba11b788dc29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph: {fileID: 0}
 --- !u!1 &847760169
 GameObject:
   m_ObjectHideFlags: 0
@@ -40400,7 +40461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 85fc0f85531d0a44aadd68207e1876e0, type: 3}
+  m_Texture: {fileID: 2800000, guid: e869b8c30f2bdb74b99254dc74026380, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
