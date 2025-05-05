@@ -1,4 +1,6 @@
 # AnimArch
+Available on:
+[![DOI](https://zenodo.org/badge/214434156.svg)](https://doi.org/10.5281/zenodo.14714534)
 
 ## **Attribution of icons**
 | Icon    | Path in repo | Attribution |
