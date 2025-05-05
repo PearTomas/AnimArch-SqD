@@ -75,76 +75,22 @@ public class VisitorCommandToPlantUML : Visitor
         }
     }
 
-    public void modifySuperScopeIDs(EXECommand command) {
-        EXEScopeBase parent = command.SuperScope;
-        bool foundLoop = false;
-        while (parent != null){
-            long parentID = parent.CommandID;
-            int index = superScopeLoopIDs.LastIndexOf(parentID);
-            if (index != -1 && command is EXECommandCall callCommand)
-            {
-                foundLoop = true;
-                long loopID = superScopeLoopIDs[index];
+    public void CloseAndRemoveLoopsFromIndex(int index){
+        index = index + 1;
+        int removeCount = superScopeLoopIDs.Count - index;
+        CloseLoopWithIndentationByCount(removeCount);
 
-                long commandID = callCommand.InvokedMethod.CommandID;
+        var removedLoopIDs = superScopeLoopIDs.GetRange(index, removeCount);
+        superScopeLoopIDs.RemoveRange(index, removeCount);
 
-                // commandsInLoops[commandID] = loopID;
-                commandsInLoops[command.CommandID] = loopID;
-                scopeMethodIdsForCalls[commandID] = command.CommandID;
-
-                int removeCount = superScopeLoopIDs.Count - (index + 1);
-                CloseLoopWithIndentationByCount(removeCount);
-                var removedLoopIDs = superScopeLoopIDs.GetRange(index + 1, removeCount);
-
-                // Odstráň všetky commandID, ktoré majú loopID medzi zmazanými
-                foreach (var key in commandsInLoops
-                                    .Where(kv => removedLoopIDs.Contains(kv.Value))
-                                    .Select(kv => kv.Key)
-                                    .ToList())
-                {
-                    commandsInLoops.Remove(key);
-                }
-
-                superScopeLoopIDs.RemoveRange(index + 1, removeCount);
-                
-                break;
-            }
-            else if (scopeMethodIdsForCalls.ContainsKey(parentID) && command is EXECommandReturn) {
-                foundLoop = true;
-                long loopID = commandsInLoops[scopeMethodIdsForCalls[parentID]];
-                scopeMethodIdsForCalls.Remove(parentID);
-
-                index = superScopeLoopIDs.LastIndexOf(loopID);
-                if (index != -1)
-                {
-                    commandsInLoops[parentID] = loopID;
-                    int removeCount = superScopeLoopIDs.Count - (index + 1);
-                    CloseLoopWithIndentationByCount(removeCount);
-                    var removedLoopIDs = superScopeLoopIDs.GetRange(index + 1, removeCount);
-
-                    // Odstráň všetky commandID, ktoré majú loopID medzi zmazanými
-                    foreach (var key in commandsInLoops
-                                        .Where(kv => removedLoopIDs.Contains(kv.Value))
-                                        .Select(kv => kv.Key)
-                                        .ToList())
-                    {
-                        commandsInLoops.Remove(key);
-                    }
-
-                    superScopeLoopIDs.RemoveRange(index + 1, removeCount);
-                }
-                break;
-            }
-
-            parent = parent.SuperScope;
+        // Odstráň všetky commandID, ktoré majú loopID medzi zmazanými
+        foreach (var key in commandsInLoops
+                            .Where(kv => removedLoopIDs.Contains(kv.Value))
+                            .Select(kv => kv.Key)
+                            .ToList())
+        {
+            commandsInLoops.Remove(key);
         }
-
-        if (foundLoop == false) {
-            CloseLoopWithIndentationByCount(superScopeLoopIDs.Count);
-            superScopeLoopIDs.Clear();
-            commandsInLoops.Clear();
-        }
-
     }
 
     public void CloseLoopWithIndentationByCount(int Count){
@@ -155,6 +101,77 @@ public class VisitorCommandToPlantUML : Visitor
             WriteIndentation();
             commandString.Append("end\n");
         }
+    }
+
+    public void ModifySuperScopeIdsForCommandReturn(EXECommandReturn command){
+        EXEScopeBase parentScope = command.SuperScope;
+        bool foundLoop = false;
+
+        while (parentScope != null)
+        {
+            long parentID = parentScope.CommandID;
+
+            if (scopeMethodIdsForCalls.ContainsKey(parentID)) 
+            {
+                long loopID = commandsInLoops[scopeMethodIdsForCalls[parentID]];
+                scopeMethodIdsForCalls.Remove(parentID);
+
+                int index = superScopeLoopIDs.LastIndexOf(loopID);
+                if (index != -1)
+                {
+                    commandsInLoops[parentID] = loopID;
+                    CloseAndRemoveLoopsFromIndex(index);
+                }
+
+                foundLoop = true;
+                break;
+            }
+
+            parentScope = parentScope.SuperScope;
+        }
+
+        if (!foundLoop) {
+            CloseAndClearAllLoops();
+        }
+    }
+
+    public void ModifySuperScopeIDsForCommandCall(EXECommandCall command) {
+        EXEScopeBase parentScope = command.SuperScope;
+        bool foundLoop = false;
+
+        while (parentScope != null)
+        {
+            long parentID = parentScope.CommandID;
+
+            int index = superScopeLoopIDs.LastIndexOf(parentID);
+            if (index != -1)
+            {   
+                long loopID = superScopeLoopIDs[index];
+
+                long commandID = command.InvokedMethod.CommandID;
+
+                commandsInLoops[command.CommandID] = loopID;
+                scopeMethodIdsForCalls[commandID] = command.CommandID;
+
+                CloseAndRemoveLoopsFromIndex(index);
+                
+                foundLoop = true;
+                break;
+            }
+
+            parentScope = parentScope.SuperScope;
+        }
+
+        if (!foundLoop) {
+            CloseAndClearAllLoops();
+        }
+
+    }
+
+    public void CloseAndClearAllLoops(){
+        CloseLoopWithIndentationByCount(superScopeLoopIDs.Count);
+        superScopeLoopIDs.Clear();
+        commandsInLoops.Clear();
     }
 
     private void HandleBasicEXECommand(EXECommand command, Func<VisitorCommandToPlantUML, bool> addCommandSimpleString) {
@@ -185,7 +202,7 @@ public class VisitorCommandToPlantUML : Visitor
                 return false;
             } 
 
-            modifySuperScopeIDs(command);
+            ModifySuperScopeIDsForCommandCall(command);
 
             string callerClass = classNames.Peek();
             string nextClass = command.MethodAccessChainS;
@@ -331,7 +348,7 @@ public class VisitorCommandToPlantUML : Visitor
             if (commandsInLoops.ContainsKey(command.SuperScope.CommandID)) {
                 return false;
             }
-            modifySuperScopeIDs(command);
+            ModifySuperScopeIdsForCommandReturn(command);
             if (command.Expression != null)
             {
                 command.Expression.Accept(visitor);

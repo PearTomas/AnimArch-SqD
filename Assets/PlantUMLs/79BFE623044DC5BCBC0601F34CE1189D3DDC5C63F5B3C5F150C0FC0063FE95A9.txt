@@ -1,78 +1,31 @@
-@startuml
-
-
-
-
-
-Client -> Vet : Register(Husky, "1.4.2022")
-activate Vet
-
-Vet -> Obs : SetVaccinationDate(Date)
+@startumlClient -> Vet : Register(Husky, "1.4.2022")
+activate VetVet -> Obs : SetVaccinationDate(Date)
 activate Obs
-
-
 return done
-
-return done
-
-
-
-
-Client -> Vet : Register(PersianCat, "2.4.2022")
-activate Vet
-
-Vet -> Obs : SetVaccinationDate(Date)
+return doneClient -> Vet : Register(PersianCat, "2.4.2022")
+activate VetVet -> Obs : SetVaccinationDate(Date)
 activate Obs
-
-
 return done
-
-return done
-Client -> Vet : SetDate("1.4.2022")
-activate Vet
-
-Vet -> Vet : VaccinateAnimals()
-activate Vet
-loop Animal
+return doneClient -> Vet : SetDate("1.4.2022")
+activate VetVet -> Vet : VaccinateAnimals()
+activate Vetloop Animal
 	Vet -> Animal : ReceiveVaccine(selfCurrentDate)
-	activate Animal
-			
-	
-	
-	
-	return done
-	
-			
-	
-	
-	
+	activate Animal				
+		
+	return done					
+		
 end
 
 return done
-
-return done
-Client -> Vet : SetDate("2.4.2022")
-activate Vet
-
-Vet -> Vet : VaccinateAnimals()
-activate Vet
-loop Animal
+return doneClient -> Vet : SetDate("2.4.2022")
+activate VetVet -> Vet : VaccinateAnimals()
+activate Vetloop Animal
 	Vet -> Animal : ReceiveVaccine(selfCurrentDate)
-	activate Animal
+	activate Animal				
+	
+	return done					
 			
-	
-	
-	return done
-	
-			
-	
-	
-	
-	
 end
 
 return done
-
-return done
-
-@enduml
+return done@enduml
