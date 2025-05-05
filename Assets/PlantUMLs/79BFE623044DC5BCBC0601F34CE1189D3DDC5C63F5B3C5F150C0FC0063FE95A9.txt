@@ -33,22 +33,20 @@ activate Vet
 
 Vet -> Vet : VaccinateAnimals()
 activate Vet
-
-Vet -> Animal : ReceiveVaccine(selfCurrentDate)
-activate Animal
+loop Animal
+	Vet -> Animal : ReceiveVaccine(selfCurrentDate)
+	activate Animal
+			
 	
-
-
-
-return done
-
-Vet -> Animal : ReceiveVaccine(selfCurrentDate)
-activate Animal
 	
-
-
-return done
-
+	
+	return done
+	
+			
+	
+	
+	
+end
 
 return done
 
@@ -58,22 +56,20 @@ activate Vet
 
 Vet -> Vet : VaccinateAnimals()
 activate Vet
-
-Vet -> Animal : ReceiveVaccine(selfCurrentDate)
-activate Animal
+loop Animal
+	Vet -> Animal : ReceiveVaccine(selfCurrentDate)
+	activate Animal
+			
 	
-
-
-return done
-
-Vet -> Animal : ReceiveVaccine(selfCurrentDate)
-activate Animal
 	
-
-
-
-return done
-
+	return done
+	
+			
+	
+	
+	
+	
+end
 
 return done
 

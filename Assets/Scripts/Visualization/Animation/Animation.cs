@@ -253,8 +253,11 @@ namespace Visualization.Animation
                     parameters += variable.Name;
                 }
             }
+
+            string path = HandleTextFile.getSaveDirectory();
+            string jsonContent = File.ReadAllText(path + AnimationName + ".json");
             
-            return DiagramName + AnimationName + startClassName + startMethodName + parameters;
+            return DiagramName + AnimationName + startClassName + startMethodName + parameters + jsonContent;
         }
 
         public IEnumerator AnimateCommand(EXECommand CurrentCommand, AnimationThread AnimationThread, bool Animate = true, bool AnimateNewObjects = true)
