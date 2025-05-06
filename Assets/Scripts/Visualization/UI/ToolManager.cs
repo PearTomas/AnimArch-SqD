@@ -35,7 +35,7 @@ namespace Visualization.UI
         }
         public void Change2D()
         {
-            DiagramManager.Instance.ChangeLayout(Is25D);
+            DiagramManager.Instance.ChangeLayout();
             Is25D = !Is25D;
         }
 
