@@ -77,7 +77,7 @@ namespace Visualization.UI
             MediatorMainPanel.SetActiveMainPanel(false);
             MediatorMainPanel.SetActiveCreationPanel(true);
 
-            DiagramManager.Instance.ChangeLayout(true);
+            DiagramManager.Instance.ChangeLayout();
         }
         private void OnLoadButtonClicked()
         {
@@ -88,7 +88,7 @@ namespace Visualization.UI
             MediatorMainPanel.SetActiveMainPanel(true);
             MediatorMainPanel.SetActiveCreationPanel(false);
             
-            DiagramManager.Instance.ChangeLayout(true);
+            DiagramManager.Instance.ChangeLayout();
         }
         //TODO sprav z toho template method, zopakovat onloadbuttonclicked,
         //Fileloader metoda vynechas tri riadky a das tam cestu z leafu
