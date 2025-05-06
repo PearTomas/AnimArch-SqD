@@ -15,6 +15,7 @@ namespace Visualization.ClassDiagram.Diagrams
         [SerializeField] public SequenceDiagram sequenceDiagram;
 
         private List<Diagram> diagramList;
+        private AbstractLayout layoutState = new QueueLayout();
 
         private void Awake()
         {
@@ -27,56 +28,9 @@ namespace Visualization.ClassDiagram.Diagrams
             };
         }
 
-        public void ChangeToQueue()
+        public void ChangeLayout()
         {
-            for (var i = 0; i < diagramList.Count; i++)
-            {
-                var diagram = diagramList[i];
-                if (diagram)
-                {
-                    if (diagram.graph)
-                    {
-                        diagram.graph.transform.position = new Vector3(0, 0, Offset * i);
-                    }
-                }
-            }
-        }
-
-        private void ChangeToGrid()
-        {
-            var xOffset = 3000;
-            var yOffset = 3000;
-            var diagramIndex = 0;
-            var rows = (int)Math.Ceiling(Math.Sqrt(diagramList.Count));
-            var cols = (int)Math.Ceiling((double)diagramList.Count / rows);
-
-            for (var j = 0; j < rows; j++)
-            {
-                for (var i = 0; i < cols; i++)
-                {
-                    if (diagramIndex >= diagramList.Count)
-                        return;
-                    var diagram = diagramList[diagramIndex++];
-                    if (!diagram || !diagram.graph)
-                        return;
-
-                    // set grid position for diagrams in the list.
-                    diagram.graph.transform.position = new Vector3(i * xOffset, j * yOffset, 0);
-                }
-            }
-        }
-
-        public void ChangeLayout(Boolean IsGridLayout)
-        {
-            if (IsGridLayout)
-            {
-                ChangeToQueue();
-            }
-            else
-            {
-                ChangeToGrid();
-            }
-
+            layoutState = layoutState.changeLayout(diagramList, Offset);
             PinCamToDiagramLayout();
         }
 
