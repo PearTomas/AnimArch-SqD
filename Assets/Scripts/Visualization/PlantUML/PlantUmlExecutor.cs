@@ -5,13 +5,14 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Debug = UnityEngine.Debug;
+using UnityEngine;
 
 namespace AnimArch.Visualization.Diagrams
 {
     public class PlantUmlExecutor
     {
         private const string TEMP_DIRECTORY_PATH = "./Temp/PlantUML/";
-        private const string JAR_SEARCH_DIRECTORY = "./Assets/JavaTools/PlantUML/";
+        private const string JAR_SEARCH_DIRECTORY = "/JavaTools/PlantUML/";
         private readonly string jarPath;
         private bool disposed;
 
@@ -21,7 +22,8 @@ namespace AnimArch.Visualization.Diagrams
 
             if (string.IsNullOrEmpty(plantUmlJarPath))
             {
-                jarPath = FindLatestPlantUmlJar(JAR_SEARCH_DIRECTORY);
+                jarPath = FindLatestPlantUmlJar(Application.dataPath + JAR_SEARCH_DIRECTORY);
+                Debug.Log("[PLANTUML] Java Jar Path found: " + jarPath);
             }
             else
             {
@@ -33,7 +35,7 @@ namespace AnimArch.Visualization.Diagrams
                 Debug.LogError(
                     $"[PLANTUML] PlantUML .jar not found.\n" +
                     $"Download from: https://github.com/plantuml/plantuml/releases\n" +
-                    $"And place it in: {JAR_SEARCH_DIRECTORY}"
+                    $"and place it in to: {Application.dataPath + JAR_SEARCH_DIRECTORY}"
                 );
             }
         }
@@ -50,12 +52,21 @@ namespace AnimArch.Visualization.Diagrams
             File.WriteAllText(pumlPath, plantUmlContent);
 
             // generate the sqd diagram
-            var outPath = Path.Combine(pngPath, $"{pngFileName}.{outputFormat}");
-            RunPlantUml(pumlPath, outPath, $"-t{outputFormat}");
+            var sqdOutputFile = Path.Combine(pngPath, $"{pngFileName}.{outputFormat}");
+            RunPlantUml(pumlPath, pngPath, $"-t{outputFormat}");
 
             // delete the puml temporary file
-            //File.Delete(pumlPath);
-            return outPath;
+            File.Delete(pumlPath);
+            if (!File.Exists(pumlPath))
+            {
+                Debug.Log($"[PLANTUML] File '{pumlPath}' was successfully deleted.");
+            }
+            else
+            {
+                Debug.LogError($"[PLANTUML] Failed to delete the file '{pumlPath}'.");
+            }
+            
+            return sqdOutputFile;
         }
 
         private void RunPlantUml(string inputFilePath, string outputFilePath, string outputFormat)
@@ -85,16 +96,15 @@ namespace AnimArch.Visualization.Diagrams
                     process.WaitForExit();
 
                     // Display the output and error (if any)
-                    Console.WriteLine(output);
                     if (!string.IsNullOrEmpty(error))
                     {
-                        Console.WriteLine("Error: " + error);
+                        Debug.LogError("[PLANTUML] error when generating SqD:" + error);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                Debug.LogError("[PLANTUML] An error occurred: " + ex.Message);
             }
         }
 
@@ -109,7 +119,7 @@ namespace AnimArch.Visualization.Diagrams
         {
             if (disposed) return;
             if (Directory.Exists(TEMP_DIRECTORY_PATH))
-                //Directory.Delete(TEMP_DIRECTORY_PATH, true);
+                Directory.Delete(TEMP_DIRECTORY_PATH, true);
             disposed = true;
         }
         
@@ -132,7 +142,7 @@ namespace AnimArch.Visualization.Diagrams
                 return null;
             }
 
-            return files[0]; // Most recently updated
+            return files[0];
         }
 
         

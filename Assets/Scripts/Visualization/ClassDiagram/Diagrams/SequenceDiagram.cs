@@ -1,20 +1,8 @@
-using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OALProgramControl;
-using TMPro;
-using UMSAGL.Scripts;
 using UnityEngine;
-using Visualization;
-using Visualization.Animation;
 using Visualization.ClassDiagram;
 using Visualization.ClassDiagram.Diagrams;
-using OALProgramControl;
-using Assets.Scripts.AnimationControl;
-using AnimArch.Encryption;
-
 
 namespace AnimArch.Visualization.Diagrams
 {
@@ -27,8 +15,6 @@ namespace AnimArch.Visualization.Diagrams
         
         private VisitorCommandToPlantUML visitor;
         private string FileNameOfPlantUMLText;
-
-        private bool fileExists = false;
 
         private void Awake()
         {
@@ -50,32 +36,16 @@ namespace AnimArch.Visualization.Diagrams
         {
             Debug.Log("[PLANTUML] Loading diagram from path: " + sequenceDiaramPngPath);
             DiagramPool.Instance.SequenceDiagram.gameObject.GetComponent<SpriteChanger>().SetSprite(sequenceDiaramPngPath);
-            //CreateGraph(); TODO Delete if not needed
-            // Generate(); TODO Delete if not needed
-            //ManualLayout(); TODO Delete if not needed
-        }
-
-        private Graph CreateGraph() // TODO Delete if not needed
-        { 
-            var go = Instantiate(DiagramPool.Instance.graphPrefab);
-            graph = go.GetComponent<Graph>();
-            graph.nodePrefab = DiagramPool.Instance.sequenceEntityPrefab;
-            return graph;
-        }
-
-        private void SetFileExists()
-        {
-            string path = Application.dataPath + "/PlantUMLs/" + FileNameOfPlantUMLText + ".svg";
-            if (File.Exists(path)) {
-              fileExists = true;  
-            }
+            DiagramPool.Instance.SequenceDiagram.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+            DiagramPool.Instance.SequenceDiagram.gameObject.transform.localScale *= 5f;
         }
 
         private void StartPlantUMLCreation(string initialClassName)
         {
-            //SetFileExists();
             visitor.classNames.Push(initialClassName);
-            visitor.StartPlantUml();
+            visitor.AddPlantUmlHeader();
+            visitor.AddTransparentBackground();
+            visitor.SetArrowColor("white");
         }
 
         public void ToPlantUMLCommand(EXECommand CurrentCommand)
@@ -87,7 +57,7 @@ namespace AnimArch.Visualization.Diagrams
         {
             PlantUmlExecutor plantUmlExecutor = new PlantUmlExecutor();
             return plantUmlExecutor.Execute(visitor.GetCommandString(), 
-                OUTPUT_FILE_DIR,
+                Application.dataPath + OUTPUT_FILE_DIR,
                 sqDiagramName,
                 OUTPUT_FORMAT_PNG);
         }
@@ -95,32 +65,16 @@ namespace AnimArch.Visualization.Diagrams
         public void CreatePlantUMLFile()
         {
             // end plant uml
-            visitor.EndPlantUml();
+            visitor.AddPlantUmlFutter();
             // get plant uml content
-            string pngPath = CreatePlantUmlPng();
-            
-            // get sprite from PNG
-            //DiagramPool.Instance.SequenceDiagram.gameObject.GetComponent<SpriteChanger>().SetSprite("C:\\Users\\Tomas\\Documents\\diagram.png");
+            CreatePlantUmlPng();
         }
         
-        public void Generate() // TODO Delete if not needed
-        {
-            //  graph.nodePrefab = messageInDiagram.Arrow;
-            // node = graph.AddNode();
-            // messageInDiagram.Arrow = node;
-            // var messageText = node.transform.Find("Message");
-            // messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
-        }
-
         public void SetDiagramName(string name)
         {
             sqDiagramName = name;
         }
         
-        public void ManualLayout() // TODO Delete if not needed
-        {
-        }
-
         public void init(string startClassName, string generateJoinedFileNameForSeqD)
         {
             SetDiagramName(generateJoinedFileNameForSeqD);
@@ -138,7 +92,6 @@ namespace AnimArch.Visualization.Diagrams
             {
                 StartPlantUMLCreation(startClassName);
             }
-            
         }
     }
 }

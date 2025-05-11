@@ -51,12 +51,24 @@ public class VisitorCommandToPlantUML : Visitor
         indentationLevel = 0;
     }
     
-    public void StartPlantUml(string arguments = "") {
+    public void AddPlantUmlHeader(string arguments = "") {
         AppendToCommandString("@startuml" + (arguments.Length > 0 ? " " + arguments : "") );
     }
     
-    public void EndPlantUml() {
+    public void AddPlantUmlFutter() {
         AppendToCommandString("@enduml");
+    }
+    
+    public void AddTransparentBackground()
+    {
+        AddEOL();
+        AppendToCommandString("skinparam backgroundColor transparent");
+    }
+    
+    public void SetArrowColor(string color)
+    {
+        AddEOL();
+        AppendToCommandString("skinparam ArrowColor " + color);
     }
     
     public void DeactivateSimpleFormatting() {

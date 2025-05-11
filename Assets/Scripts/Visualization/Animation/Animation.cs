@@ -234,7 +234,6 @@ namespace Visualization.Animation
             AnimationThread SuperThread = new AnimationThread(currentProgramInstance.CommandStack, currentProgramInstance, this);
             yield return StartCoroutine(SuperThread.Start());
             
-            Debug.Log("[PLANTUML] TEST: " + (gameObject != null ? "not null" : "null") );
             yield return TeardownAnimation();
             AnimationIsRunning = false;
         }
