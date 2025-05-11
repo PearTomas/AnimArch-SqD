@@ -223,11 +223,7 @@ namespace Visualization.Animation
                 yield break;
             }
             
-            DiagramManager.sequenceDiagram.ResetDiagram();
-            DiagramManager.sequenceDiagram.LoadDiagram();
-
-            DiagramManager.sequenceDiagram.CreateHash(GenerateJoinedFileNameForSeqD());
-            DiagramManager.sequenceDiagram.StartPlantUMLCreation(startClassName); 
+            DiagramManager.sequenceDiagram.init(startClassName, GenerateJoinedFileNameForSeqD());
             // hash file name, check if there exists png, if not start plantUml creation
             // if started creation, accept currentCommand in AnimateCommand(), and end creation in TeardownAnimation() 
 
@@ -237,7 +233,8 @@ namespace Visualization.Animation
 
             AnimationThread SuperThread = new AnimationThread(currentProgramInstance.CommandStack, currentProgramInstance, this);
             yield return StartCoroutine(SuperThread.Start());
-
+            
+            Debug.Log("[PLANTUML] TEST: " + (gameObject != null ? "not null" : "null") );
             yield return TeardownAnimation();
             AnimationIsRunning = false;
         }

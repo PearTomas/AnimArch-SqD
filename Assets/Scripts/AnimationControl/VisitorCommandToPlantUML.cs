@@ -50,7 +50,15 @@ public class VisitorCommandToPlantUML : Visitor
         simpleFormatting = true;
         indentationLevel = 0;
     }
-
+    
+    public void StartPlantUml(string arguments = "") {
+        AppendToCommandString("@startuml" + (arguments.Length > 0 ? " " + arguments : "") );
+    }
+    
+    public void EndPlantUml() {
+        AppendToCommandString("@enduml");
+    }
+    
     public void DeactivateSimpleFormatting() {
         simpleFormatting = false;
     }

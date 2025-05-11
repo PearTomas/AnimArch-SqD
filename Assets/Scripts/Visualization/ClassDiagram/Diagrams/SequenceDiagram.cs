@@ -20,6 +20,11 @@ namespace AnimArch.Visualization.Diagrams
 {
     public class SequenceDiagram : Diagram
     {
+        const string OUTPUT_FORMAT_PNG = "png";
+        const string OUTPUT_FILE_DIR = "/Resources/SequenceDiagrams/";
+        
+        string sqDiagramName = null;
+        
         private VisitorCommandToPlantUML visitor;
         private string FileNameOfPlantUMLText;
 
@@ -30,7 +35,6 @@ namespace AnimArch.Visualization.Diagrams
             DiagramPool.Instance.SequenceDiagram = this;
             ResetDiagram();
             visitor = new VisitorCommandToPlantUML();
-
         }
 
         public void ResetDiagram()
@@ -42,15 +46,17 @@ namespace AnimArch.Visualization.Diagrams
             }
         }
 
-        public void LoadDiagram()
+        private void LoadDiagram(string sequenceDiaramPngPath)
         {
-            CreateGraph();
-            Generate();
-            ManualLayout();
+            Debug.Log("[PLANTUML] Loading diagram from path: " + sequenceDiaramPngPath);
+            DiagramPool.Instance.SequenceDiagram.gameObject.GetComponent<SpriteChanger>().SetSprite(sequenceDiaramPngPath);
+            //CreateGraph(); TODO Delete if not needed
+            // Generate(); TODO Delete if not needed
+            //ManualLayout(); TODO Delete if not needed
         }
 
-        private Graph CreateGraph()
-        {
+        private Graph CreateGraph() // TODO Delete if not needed
+        { 
             var go = Instantiate(DiagramPool.Instance.graphPrefab);
             graph = go.GetComponent<Graph>();
             graph.nodePrefab = DiagramPool.Instance.sequenceEntityPrefab;
@@ -65,43 +71,39 @@ namespace AnimArch.Visualization.Diagrams
             }
         }
 
-        public void StartPlantUMLCreation(string initialClassName)
+        private void StartPlantUMLCreation(string initialClassName)
         {
-            SetFileExists();
-            if (fileExists) {
-                return;
-            }
-            visitor.classNames.Push(initialClassName);    
-            visitor.AppendToCommandString("@startuml"); 
+            //SetFileExists();
+            visitor.classNames.Push(initialClassName);
+            visitor.StartPlantUml();
         }
 
         public void ToPlantUMLCommand(EXECommand CurrentCommand)
         {
-            if (fileExists) {
-                return;
-            }
             CurrentCommand.Accept(visitor);
         }
-
+        
+        private string CreatePlantUmlPng()
+        {
+            PlantUmlExecutor plantUmlExecutor = new PlantUmlExecutor();
+            return plantUmlExecutor.Execute(visitor.GetCommandString(), 
+                OUTPUT_FILE_DIR,
+                sqDiagramName,
+                OUTPUT_FORMAT_PNG);
+        }
+        
         public void CreatePlantUMLFile()
         {
-            if (fileExists) {
-                return;
-            }
-            visitor.AppendToCommandString("@enduml");
-
-            string path = Application.dataPath + "/PlantUMLs/" + FileNameOfPlantUMLText + ".txt";
-            string content = visitor.GetCommandString().ToString();
-
-            File.WriteAllText(path, content);
+            // end plant uml
+            visitor.EndPlantUml();
+            // get plant uml content
+            string pngPath = CreatePlantUmlPng();
+            
+            // get sprite from PNG
+            //DiagramPool.Instance.SequenceDiagram.gameObject.GetComponent<SpriteChanger>().SetSprite("C:\\Users\\Tomas\\Documents\\diagram.png");
         }
-
-        public void CreateHash(string name)
-        {
-            FileNameOfPlantUMLText = HashService.GenerateSHA256(name);
-        }
-
-        public void Generate()
+        
+        public void Generate() // TODO Delete if not needed
         {
             //  graph.nodePrefab = messageInDiagram.Arrow;
             // node = graph.AddNode();
@@ -110,9 +112,33 @@ namespace AnimArch.Visualization.Diagrams
             // messageText.GetComponent<TextMeshProUGUI>().text = messageInDiagram.MessageText;
         }
 
-
-        public void ManualLayout()
+        public void SetDiagramName(string name)
         {
+            sqDiagramName = name;
+        }
+        
+        public void ManualLayout() // TODO Delete if not needed
+        {
+        }
+
+        public void init(string startClassName, string generateJoinedFileNameForSeqD)
+        {
+            SetDiagramName(generateJoinedFileNameForSeqD);
+            ResetDiagram();
+
+            sqDiagramName = PlantUmlExecutor.GenerateHash(generateJoinedFileNameForSeqD);
+            
+            string sequenceDiaramPngPath = Application.dataPath + OUTPUT_FILE_DIR + sqDiagramName + ".png";
+            
+            if (File.Exists(sequenceDiaramPngPath))
+            {
+                LoadDiagram(sequenceDiaramPngPath);
+            }
+            else
+            {
+                StartPlantUMLCreation(startClassName);
+            }
+            
         }
     }
 }

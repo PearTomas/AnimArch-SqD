@@ -15,7 +15,7 @@ namespace Visualization.ClassDiagram.Diagrams
         [SerializeField] public SequenceDiagram sequenceDiagram;
 
         private List<Diagram> diagramList;
-        private AbstractLayout layoutState = new QueueLayout();
+        private AbstractLayout layoutState = new GridLayout();
 
         private void Awake()
         {
