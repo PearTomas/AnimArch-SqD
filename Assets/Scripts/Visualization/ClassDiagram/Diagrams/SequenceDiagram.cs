@@ -6,24 +6,23 @@ using Visualization.ClassDiagram.Diagrams;
 
 namespace AnimArch.Visualization.Diagrams
 {
-    public class SequenceDiagram : Diagram
+    public class SequenceDiagram : SequenceDiagramBase
     {
-        const string OUTPUT_FORMAT_PNG = "png";
-        const string OUTPUT_FILE_DIR = "/Resources/SequenceDiagrams/";
-        
-        string sqDiagramName = null;
-        
-        private VisitorCommandToPlantUML visitor;
-        private string FileNameOfPlantUMLText;
+        private const string OUTPUT_FORMAT = "png";
+        private const string OUTPUT_DIR = "/Resources/SequenceDiagrams/";
 
-        private void Awake()
+        private string diagramNameHash;
+        private string startClassName;
+
+        public override void Init(string startClassName, string fileKeyHash)
         {
-            DiagramPool.Instance.SequenceDiagram = this;
+            this.startClassName = startClassName;
+            this.diagramNameHash = fileKeyHash;
+
             ResetDiagram();
-            visitor = new VisitorCommandToPlantUML();
         }
 
-        public void ResetDiagram()
+        private void ResetDiagram()
         {
             if (graph != null)
             {
@@ -32,66 +31,30 @@ namespace AnimArch.Visualization.Diagrams
             }
         }
 
-        private void LoadDiagram(string sequenceDiaramPngPath)
+        public override void ToPlantUMLCommand(EXECommand command)
         {
-            Debug.Log("[PLANTUML] Loading diagram from path: " + sequenceDiaramPngPath);
-            DiagramPool.Instance.SequenceDiagram.gameObject.GetComponent<SpriteChanger>().SetSprite(sequenceDiaramPngPath);
-            DiagramPool.Instance.SequenceDiagram.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-            DiagramPool.Instance.SequenceDiagram.gameObject.transform.localScale *= 5f;
         }
 
-        private void StartPlantUMLCreation(string initialClassName)
+        public override void CreatePlantUMLFile()
         {
-            visitor.classNames.Push(initialClassName);
-            visitor.AddPlantUmlHeader();
-            visitor.AddTransparentBackground();
-            visitor.SetArrowColor("white");
         }
 
-        public void ToPlantUMLCommand(EXECommand CurrentCommand)
+        public override void LoadGeneratedDiagram()
         {
-            CurrentCommand.Accept(visitor);
-        }
-        
-        private string CreatePlantUmlPng()
-        {
-            PlantUmlExecutor plantUmlExecutor = new PlantUmlExecutor();
-            return plantUmlExecutor.Execute(visitor.GetCommandString(), 
-                Application.dataPath + OUTPUT_FILE_DIR,
-                sqDiagramName,
-                OUTPUT_FORMAT_PNG);
-        }
-        
-        public void CreatePlantUMLFile()
-        {
-            // end plant uml
-            visitor.AddPlantUmlFutter();
-            // get plant uml content
-            CreatePlantUmlPng();
-        }
-        
-        public void SetDiagramName(string name)
-        {
-            sqDiagramName = name;
-        }
-        
-        public void init(string startClassName, string generateJoinedFileNameForSeqD)
-        {
-            SetDiagramName(generateJoinedFileNameForSeqD);
-            ResetDiagram();
+            string fullPath = Application.dataPath + OUTPUT_DIR + diagramNameHash + ".png";
 
-            sqDiagramName = PlantUmlExecutor.GenerateHash(generateJoinedFileNameForSeqD);
-            
-            string sequenceDiaramPngPath = Application.dataPath + OUTPUT_FILE_DIR + sqDiagramName + ".png";
-            
-            if (File.Exists(sequenceDiaramPngPath))
+            if (!File.Exists(fullPath))
             {
-                LoadDiagram(sequenceDiaramPngPath);
+                Debug.LogError("[RealSequenceDiagram] PNG not found when trying to load: " + fullPath);
+                return;
             }
-            else
-            {
-                StartPlantUMLCreation(startClassName);
-            }
+
+            Debug.Log("[RealSequenceDiagram] Loading PNG from path: " + fullPath);
+            var spriteChanger = GetComponent<SpriteChanger>();
+            spriteChanger?.SetSprite(fullPath);
+
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.localScale *= 5f;
         }
     }
 }

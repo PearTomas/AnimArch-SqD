@@ -59,7 +59,7 @@ namespace Visualization.Animation
         private void Awake()
         {
             DiagramManager = DiagramManager.Instance;
-            DiagramManager.sequenceDiagram = GameObject.Find("SequenceDiagram").GetComponent<SequenceDiagram>();
+            DiagramManager.sequenceDiagram = new ProxySequenceDiagram();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }
@@ -223,7 +223,9 @@ namespace Visualization.Animation
                 yield break;
             }
             
-            DiagramManager.sequenceDiagram.init(startClassName, GenerateJoinedFileNameForSeqD());
+            string hash = PlantUmlExecutor.GenerateHash(GenerateJoinedFileNameForSeqD());
+            TryInitializeSequenceDiagramIfNeeded(startClassName, hash);
+            DiagramManager.sequenceDiagram.Init(startClassName, hash);
             // hash file name, check if there exists png, if not start plantUml creation
             // if started creation, accept currentCommand in AnimateCommand(), and end creation in TeardownAnimation() 
 
@@ -237,6 +239,15 @@ namespace Visualization.Animation
             yield return TeardownAnimation();
             AnimationIsRunning = false;
         }
+
+        private void TryInitializeSequenceDiagramIfNeeded(string className, string hash)
+        {
+            if (DiagramManager.sequenceDiagram is ProxySequenceDiagram proxy)
+            {
+                proxy.TryInitialize(className, hash);
+            }
+        }
+
 
         private string GenerateJoinedFileNameForSeqD()
         {

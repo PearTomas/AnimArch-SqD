@@ -12,7 +12,7 @@ namespace Visualization.ClassDiagram.Diagrams
         [SerializeField] public ClassDiagram classDiagram;
         [SerializeField] public ObjectDiagram objectDiagram;
         [SerializeField] public ActivityDiagram activityDiagram;
-        [SerializeField] public SequenceDiagram sequenceDiagram;
+        [SerializeField] public SequenceDiagramBase sequenceDiagram;
 
         private List<Diagram> diagramList;
         private AbstractLayout layoutState = new GridLayout();
