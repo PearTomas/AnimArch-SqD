@@ -124,7 +124,7 @@ namespace OALProgramControl
                 }
 
                 result = EXEExecutionResult.Success();
-                result.ReturnedOutput = new EXEValueString(this.Value + (operand as EXEValueString).Value);
+                result.ReturnedOutput = new EXEValueString($"\"{this.Value + (operand as EXEValueString).Value}\"");
                 return result;
             }
             else if ("*".Equals(operation))
@@ -135,12 +135,13 @@ namespace OALProgramControl
                 }
 
                 result = EXEExecutionResult.Success();
+                string newString = Enumerable
+                            .Range(0, (int)(operand as EXEValueInt).Value)
+                            .Aggregate("", (acc, x) => acc + x);
                 result.ReturnedOutput
                     = new EXEValueString
                     (
-                        Enumerable
-                            .Range(0, (int)(operand as EXEValueInt).Value)
-                            .Aggregate("", (acc, x) => acc + x)
+                        $"\"{newString}\""
                     );
                 return result;
             }

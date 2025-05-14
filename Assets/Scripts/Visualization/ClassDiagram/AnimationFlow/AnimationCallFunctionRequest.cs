@@ -29,22 +29,27 @@ namespace Visualization.Animation
 
         public override IEnumerator PerformRequest()
         {
-            ClassDiagram.Diagrams.ClassDiagram classDiagram = Animation.Instance.DiagramManager.classDiagram;
-            Class called = classDiagram.FindClassByName(callInfo.CalledMethod.OwningClass.Name).ParsedClass;
-            Method calledMethod = classDiagram.FindMethodByName(callInfo.CalledMethod.OwningClass.Name, callInfo.CalledMethod.Name);
-            RelationInDiagram relation = classDiagram.FindEdgeInfo(callInfo.Relation?.RelationshipName);
 
-            Animation.assignCallInfoToAllHighlightSubjects(called, calledMethod, relation, callInfo, callInfo.CalledMethod);
-
-            if (relation != null)
+            if (callInfo != null)
             {
-                yield return new WaitUntil(() => relation.HighlightSubject.finishedFlag.IsDrawingFinished());
-                relation?.HighlightSubject.IncrementHighlightLevel();
-                yield return new WaitUntil(() => relation.HighlightSubject.finishedFlag.IsDrawingFinished());
+                ClassDiagram.Diagrams.ClassDiagram classDiagram = Animation.Instance.classDiagram;
+                Class called = classDiagram.FindClassByName(callInfo.CalledMethod.OwningClass.Name).ParsedClass;
+                Method calledMethod = classDiagram.FindMethodByName(callInfo.CalledMethod.OwningClass.Name, callInfo.CalledMethod.Name);
+                RelationInDiagram relation = classDiagram.FindEdgeInfo(callInfo.Relation?.RelationshipName);
+
+                Animation.assignCallInfoToAllHighlightSubjects(called, calledMethod, relation, callInfo, callInfo.CalledMethod);
+
+                if (relation != null)
+                {
+                    yield return new WaitUntil(() => relation.HighlightSubject.finishedFlag.IsDrawingFinished());
+                    relation?.HighlightSubject.IncrementHighlightLevel();
+                    yield return new WaitUntil(() => relation.HighlightSubject.finishedFlag.IsDrawingFinished());
+                }
+                calledMethod.HighlightObjectSubject.IncrementHighlightLevel();
+                called.HighlightSubject.IncrementHighlightLevel();
+                calledMethod.HighlightSubject.IncrementHighlightLevel();
             }
-            calledMethod.HighlightObjectSubject.IncrementHighlightLevel();
-            called.HighlightSubject.IncrementHighlightLevel();
-            calledMethod.HighlightSubject.IncrementHighlightLevel();
+
             yield return new WaitForSeconds(AnimationData.Instance.AnimSpeed * ANIM_SPEED_QUANTIFIER);
 
             Done = true;
