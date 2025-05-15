@@ -32,7 +32,7 @@ namespace Visualization.Animation
 
             if (callInfo != null)
             {
-                ClassDiagram.Diagrams.ClassDiagram classDiagram = Animation.Instance.classDiagram;
+                ClassDiagram.Diagrams.ClassDiagram classDiagram = Animation.Instance.DiagramManager.classDiagram;
                 Class called = classDiagram.FindClassByName(callInfo.CalledMethod.OwningClass.Name).ParsedClass;
                 Method calledMethod = classDiagram.FindMethodByName(callInfo.CalledMethod.OwningClass.Name, callInfo.CalledMethod.Name);
                 RelationInDiagram relation = classDiagram.FindEdgeInfo(callInfo.Relation?.RelationshipName);
