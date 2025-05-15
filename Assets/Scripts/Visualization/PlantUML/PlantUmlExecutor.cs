@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Debug = UnityEngine.Debug;
 using UnityEngine;
+using Assets.Scripts.Util.IO;
 
 namespace AnimArch.Visualization.Diagrams
 {
@@ -15,11 +16,11 @@ namespace AnimArch.Visualization.Diagrams
         private const string JAR_SEARCH_DIRECTORY = "/JavaTools/PlantUML/";
         private readonly string jarPath;
         private bool disposed;
+        private TempDirectory tempDirectory;
 
         public PlantUmlExecutor(string plantUmlJarPath = null)
         {
-            Directory.CreateDirectory(TEMP_DIRECTORY_PATH);
-
+            var directory = new TempDirectory("./Temp/PlantUML/");
             if (string.IsNullOrEmpty(plantUmlJarPath))
             {
                 jarPath = FindLatestPlantUmlJar(Application.dataPath + JAR_SEARCH_DIRECTORY);
@@ -39,20 +40,17 @@ namespace AnimArch.Visualization.Diagrams
                 );
             }
         }
-
         ~PlantUmlExecutor()
         {
-            Dispose();
         }
-
-        public string Execute(string plantUmlContent,string pngPath, string pngFileName, string outputFormat)
+        
+        public void Execute(string plantUmlContent,string pngPath, string pngFileName, string outputFormat)
         {
+            // DO CONT
             // save the PlantUML content to a temporary file
             var pumlPath = Path.Combine(TEMP_DIRECTORY_PATH, $"{pngFileName}.puml");
             File.WriteAllText(pumlPath, plantUmlContent);
-
-            // generate the sqd diagram
-            var sqdOutputFile = Path.Combine(pngPath, $"{pngFileName}.{outputFormat}");
+            
             RunPlantUml(pumlPath, pngPath, $"-t{outputFormat}");
 
             // delete the puml temporary file
@@ -65,8 +63,6 @@ namespace AnimArch.Visualization.Diagrams
             {
                 Debug.LogError($"[PLANTUML] Failed to delete the file '{pumlPath}'.");
             }
-            
-            return sqdOutputFile;
         }
 
         private void RunPlantUml(string inputFilePath, string outputFilePath, string outputFormat)
@@ -90,7 +86,6 @@ namespace AnimArch.Visualization.Diagrams
                     process.Start();
 
                     // Read the standard output and error
-                    string output = process.StandardOutput.ReadToEnd();
                     string error = process.StandardError.ReadToEnd();
 
                     process.WaitForExit();
@@ -114,14 +109,6 @@ namespace AnimArch.Visualization.Diagrams
             var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
             return BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
         }
-
-        public void Dispose()
-        {
-            if (disposed) return;
-            if (Directory.Exists(TEMP_DIRECTORY_PATH))
-                Directory.Delete(TEMP_DIRECTORY_PATH, true);
-            disposed = true;
-        }
         
         private string FindLatestPlantUmlJar(string directory)
         {
@@ -144,7 +131,5 @@ namespace AnimArch.Visualization.Diagrams
 
             return files[0];
         }
-
-        
     }
 }
