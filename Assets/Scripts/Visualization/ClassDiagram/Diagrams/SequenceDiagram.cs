@@ -14,12 +14,10 @@ namespace AnimArch.Visualization.Diagrams
         private string diagramNameHash;
         private string startClassName;
 
-        public override void Init(string startClassName, string fileKeyHash)
+        public override void Init()
         {
-            this.startClassName = startClassName;
-            this.diagramNameHash = fileKeyHash;
-
             ResetDiagram();
+            LoadGeneratedDiagram();
         }
 
         private void ResetDiagram()
@@ -31,15 +29,7 @@ namespace AnimArch.Visualization.Diagrams
             }
         }
 
-        public override void ToPlantUMLCommand(EXECommand command)
-        {
-        }
-
-        public override void CreatePlantUMLFile()
-        {
-        }
-
-        public override void LoadGeneratedDiagram()
+        public void LoadGeneratedDiagram()
         {
             string fullPath = Application.dataPath + OUTPUT_DIR + diagramNameHash + ".png";
 
@@ -55,6 +45,20 @@ namespace AnimArch.Visualization.Diagrams
 
             transform.rotation = Quaternion.Euler(0, 180, 0);
             transform.localScale *= 5f;
+        }
+
+        public void SetParameters(string startClassName, string fileKeyHash)
+        {
+            this.startClassName = startClassName;
+            this.diagramNameHash = fileKeyHash;
+        }
+
+        public override void ToPlantUMLCommand(EXECommand command)
+        {
+        }
+
+        public override void CreatePlantUMLFile()
+        {
         }
     }
 }

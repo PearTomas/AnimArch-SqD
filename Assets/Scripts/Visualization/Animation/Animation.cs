@@ -51,6 +51,8 @@ namespace Visualization.Animation
 
         public const float AnimationSpeedCoefficient = 0.2f;
 
+        private FactorySequenceDiagram sequenceFactory = new FactorySequenceDiagram();
+
         [HideInInspector] private OALProgram currentProgramInstance = new OALProgram();
         [HideInInspector] public OALProgram CurrentProgramInstance { get { return currentProgramInstance; } }
 
@@ -59,7 +61,7 @@ namespace Visualization.Animation
         private void Awake()
         {
             DiagramManager = DiagramManager.Instance;
-            DiagramManager.sequenceDiagram = new ProxySequenceDiagram();
+            DiagramManager.sequenceDiagram = new NullDiagram();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }
@@ -225,9 +227,7 @@ namespace Visualization.Animation
             
             string hash = PlantUmlExecutor.GenerateHash(GenerateJoinedFileNameForSeqD());
             TryInitializeSequenceDiagramIfNeeded(startClassName, hash);
-            DiagramManager.sequenceDiagram.Init(startClassName, hash);
-            // hash file name, check if there exists png, if not start plantUml creation
-            // if started creation, accept currentCommand in AnimateCommand(), and end creation in TeardownAnimation() 
+            DiagramManager.sequenceDiagram.Init();
 
             SetupAnimation(startMethod, MethodExecutableCode);
 
@@ -242,9 +242,9 @@ namespace Visualization.Animation
 
         private void TryInitializeSequenceDiagramIfNeeded(string className, string hash)
         {
-            if (DiagramManager.sequenceDiagram is ProxySequenceDiagram proxy)
+            if (DiagramManager.sequenceDiagram is NullDiagram nullDiagram)
             {
-                proxy.TryInitialize(className, hash);
+                DiagramManager.sequenceDiagram = sequenceFactory.CreateSequenceDiagram(className, hash);
             }
         }
 

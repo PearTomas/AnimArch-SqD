@@ -17,7 +17,6 @@ namespace AnimArch.Visualization.Diagrams
         {
             _startClassName = startClassName;
             _fileKeyHash = fileKeyHash;
-            StartPlantUMLCreation();
         }
 
         private void StartPlantUMLCreation()
@@ -28,7 +27,10 @@ namespace AnimArch.Visualization.Diagrams
             visitor.SetArrowColor("white");
         }
 
-        public override void Init(string startClassName, string fileKeyHash) { }
+        public override void Init()
+        {
+            StartPlantUMLCreation();
+        }
 
         public override void ToPlantUMLCommand(EXECommand command)
         {
@@ -45,6 +47,5 @@ namespace AnimArch.Visualization.Diagrams
                             "png");
         }
 
-        public override void LoadGeneratedDiagram() { /* nothing for now */ }
     }
 }
