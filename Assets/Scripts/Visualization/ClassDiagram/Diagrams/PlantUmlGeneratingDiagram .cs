@@ -1,6 +1,7 @@
 using System.IO;
 using OALProgramControl;
 using UnityEngine;
+using Visualization;
 using Visualization.ClassDiagram;
 using Visualization.ClassDiagram.Diagrams;
 
@@ -12,11 +13,13 @@ namespace AnimArch.Visualization.Diagrams
         private VisitorCommandToPlantUML visitor = new VisitorCommandToPlantUML();
         private readonly string _startClassName;
         private readonly string _fileKeyHash;
+        private IPlantUmlGeneratorAdapter _umlAdapter;
 
         public PlantUmlGeneratingDiagram(string startClassName, string fileKeyHash)
         {
             _startClassName = startClassName;
             _fileKeyHash = fileKeyHash;
+            _umlAdapter = new PlantUmlExecutorAdapter();
         }
 
         private void StartPlantUMLCreation()
@@ -40,8 +43,7 @@ namespace AnimArch.Visualization.Diagrams
         public override void CreatePlantUMLFile()
         {
             visitor.AddPlantUmlFutter();
-            PlantUmlExecutor executor = new PlantUmlExecutor();
-            executor.Execute(visitor.GetCommandString(),
+            _umlAdapter.GenerateDiagram(visitor.GetCommandString(),
                             Application.dataPath + "/Resources/SequenceDiagrams/",
                             _fileKeyHash,
                             "png");
