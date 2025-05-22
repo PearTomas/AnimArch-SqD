@@ -10,7 +10,7 @@ using Assets.Scripts.Util.IO;
 
 namespace AnimArch.Visualization.Diagrams
 {
-    public class PlantUmlExecutor
+    public class PlantUml
     {
         private const string TEMP_DIRECTORY_PATH = "./Temp/PlantUML/";
         private const string JAR_SEARCH_DIRECTORY = "/JavaTools/PlantUML/";
@@ -18,9 +18,8 @@ namespace AnimArch.Visualization.Diagrams
         private bool disposed;
         private TempDirectory tempDirectory;
 
-        public PlantUmlExecutor(string plantUmlJarPath = null)
+        public PlantUml(string plantUmlJarPath = null)
         {
-            var directory = new TempDirectory("./Temp/PlantUML/");
             if (string.IsNullOrEmpty(plantUmlJarPath))
             {
                 jarPath = FindLatestPlantUmlJar(Application.dataPath + JAR_SEARCH_DIRECTORY);
@@ -40,29 +39,19 @@ namespace AnimArch.Visualization.Diagrams
                 );
             }
         }
-        ~PlantUmlExecutor()
+        ~PlantUml()
         {
         }
         
-        public void Execute(string plantUmlContent,string pngPath, string pngFileName, string outputFormat)
+        public void GenerateDiagramFromPuml(string plantUmlContent,string pngPath, string pngFileName, string outputFormat)
         {
-            // DO CONT
+            // create a temporary directory
+            new TempDirectory(TEMP_DIRECTORY_PATH);
             // save the PlantUML content to a temporary file
             var pumlPath = Path.Combine(TEMP_DIRECTORY_PATH, $"{pngFileName}.puml");
             File.WriteAllText(pumlPath, plantUmlContent);
             
             RunPlantUml(pumlPath, pngPath, $"-t{outputFormat}");
-
-            // delete the puml temporary file
-            File.Delete(pumlPath);
-            if (!File.Exists(pumlPath))
-            {
-                Debug.Log($"[PLANTUML] File '{pumlPath}' was successfully deleted.");
-            }
-            else
-            {
-                Debug.LogError($"[PLANTUML] Failed to delete the file '{pumlPath}'.");
-            }
         }
 
         private void RunPlantUml(string inputFilePath, string outputFilePath, string outputFormat)

@@ -225,7 +225,7 @@ namespace Visualization.Animation
                 yield break;
             }
             
-            string hash = PlantUmlExecutor.GenerateHash(GenerateJoinedFileNameForSeqD());
+            string hash = PlantUml.GenerateHash(GenerateJoinedFileNameForSeqD());
             TryInitializeSequenceDiagramIfNeeded(startClassName, hash);
             DiagramManager.sequenceDiagram.Init();
 

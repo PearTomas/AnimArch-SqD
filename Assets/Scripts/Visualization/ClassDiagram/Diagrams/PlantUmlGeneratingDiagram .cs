@@ -19,7 +19,7 @@ namespace AnimArch.Visualization.Diagrams
         {
             _startClassName = startClassName;
             _fileKeyHash = fileKeyHash;
-            _umlAdapter = new PlantUmlExecutorAdapter();
+            _umlAdapter = new PlantUmlAdapter();
         }
 
         private void StartPlantUMLCreation()
