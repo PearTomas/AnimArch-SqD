@@ -51,8 +51,6 @@ namespace Visualization.Animation
 
         public const float AnimationSpeedCoefficient = 0.2f;
 
-        private FactorySequenceDiagram sequenceFactory = new FactorySequenceDiagram();
-
         [HideInInspector] private OALProgram currentProgramInstance = new OALProgram();
         [HideInInspector] public OALProgram CurrentProgramInstance { get { return currentProgramInstance; } }
 
@@ -61,7 +59,6 @@ namespace Visualization.Animation
         private void Awake()
         {
             DiagramManager = DiagramManager.Instance;
-            DiagramManager.sequenceDiagram = new NullDiagram();
             standardPlayMode = true;
             edgeHighlighter = HighlightImmediateState.GetInstance();
         }
@@ -242,10 +239,7 @@ namespace Visualization.Animation
 
         private void TryInitializeSequenceDiagramIfNeeded(string className, string hash)
         {
-            if (DiagramManager.sequenceDiagram is NullDiagram nullDiagram)
-            {
-                DiagramManager.sequenceDiagram = sequenceFactory.CreateSequenceDiagram(className, hash);
-            }
+            DiagramManager.sequenceDiagram = FactorySequenceDiagram.Instance.CreateSequenceDiagram(className, hash);   
         }
 
 
