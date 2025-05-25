@@ -6,7 +6,8 @@ namespace Visualization.ClassDiagram.Diagrams
     public class QueueLayout : AbstractLayout
     {
         private static AbstractLayout otherLayout = new GridLayout();
-        
+
+        public override void preprocesing(List<Diagram> diagramList) {}
 
         public override void loopDiagrams(List<Diagram> diagramList, float offset)
         {

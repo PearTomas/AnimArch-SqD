@@ -13,17 +13,10 @@ namespace Visualization.ClassDiagram.Diagrams
             return changeType();
         }
 
-        public virtual AbstractLayout changeType()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract AbstractLayout changeType();
 
-        public virtual void loopDiagrams(List<Diagram> diagramList, float offset)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void loopDiagrams(List<Diagram> diagramList, float offset);
 
-        public virtual void preprocesing(List<Diagram> diagramList) {}
-        
+        public abstract void preprocesing(List<Diagram> diagramList);
     }
 }
