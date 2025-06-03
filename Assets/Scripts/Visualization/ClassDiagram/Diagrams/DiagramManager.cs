@@ -53,8 +53,7 @@ namespace Visualization.ClassDiagram.Diagrams
             // it will be moved to far from the diagram (it is no longer visible)
             const float cameraPadding = 1f;
             camera.transform.position = 
-                new Vector3(
-                    bounds.center.x, bounds.center.y, camera.transform.position.z) - 
+                new Vector3(bounds.center.x, bounds.center.y, camera.transform.position.z) - 
                     camera.transform.forward * (Mathf.Max(bounds.size.x, bounds.size.y) / cameraPadding
                 );
             camera.orthographicSize = Mathf.Max(bounds.size.x, bounds.size.y) / 2;

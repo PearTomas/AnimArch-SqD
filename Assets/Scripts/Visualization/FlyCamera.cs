@@ -31,7 +31,7 @@ namespace Visualization
         public float movementToolSpeed = 2.5f;
         public float offsetX;
         public float offsetY;
-        private float offsetZ = 800;  
+        private float offsetZ = 2000;  
         public GameObject[] IgnoredInputs;
 
         private Vector3
