@@ -10139,19 +10139,6 @@ MonoBehaviour:
     type: 3}
   activityPrefab: {fileID: 1226358218867430, guid: 29ea50781798cac44b9a0005a201fa77,
     type: 3}
-  sequenceEntityPrefab: {fileID: 1226358218867430, guid: 87290dc73ceec474ab9f04f9f324a604,
-    type: 3}
-  sequenceLinePrefab: {fileID: 1226358218867430, guid: 0d9ba15091db95a4b91891a3a3dda14c,
-    type: 3}
-  sequenceActivationBlock: {fileID: 1156878998517402, guid: ee2717e8d87af0b49bd5c1e6e384c2ea,
-    type: 3}
-  sequenceArrowMessage: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
-    type: 3}
-  sequenceArrowDS: {fileID: 2080456151626043265, guid: b4e29ebd97adfc94f8e3317e552c9804,
-    type: 3}
-  sequenceArrowSD: {fileID: 1523548488617654, guid: 3dbd934c74a95a741a4fa0f9d894e458,
-    type: 3}
-  sequenceMessage: {fileID: 100000, guid: ddc15c0da3841364b90e38453e021c3b, type: 3}
   activityInitialPrefab: {fileID: 1226358218867430, guid: 204995dbba78b89409f029217f15cb08,
     type: 3}
   activityFinalPrefab: {fileID: 1226358218867430, guid: 1be686612295d7949a1be32ca1e1dbb3,
@@ -10201,6 +10188,8 @@ MonoBehaviour:
   networkDependsPrefab: {fileID: 1333350112338376, guid: 46fd3b2addee83147a6cdeebb1e800ac,
     type: 3}
   networkRealisationPrefab: {fileID: 1250365410247918905, guid: 30cd4580fef21734d83ecd870d192fca,
+    type: 3}
+  SequenceDiagramGO: {fileID: 1156878998517402, guid: c6db3a1a238164b4894cb7896c009d9a,
     type: 3}
   ClassDiagram: {fileID: 1164213134}
   ObjectDiagram: {fileID: 0}
